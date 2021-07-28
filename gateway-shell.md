@@ -36,7 +36,13 @@ Gateway Shell is a gateway client. Start by registering and authorizing access t
 Register a file server gateway at `http://localhost:8080` with `{"key": "default"}`. 
 
 ```
-show me the money
+explorer> gateway authorize devserver http://localhost:8080 '{"key": "default"}'
+
+Success! Gateway authorized as devserver.
+explorer> gateway list
+devserver
+
+explorer> 
 ```
 ## Commands
 Run Gateway Shell without commands to display the usage info.
