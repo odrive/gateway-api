@@ -15,7 +15,7 @@ Begin integration by deciding how to map users and application data to virtual f
 2. How to map application users to gateway users? Most of the time, the mapping is one-to-one. However, the mapping is arbitrary. The only requirement is the ability to support authentication and authorization.
 3. How to map users to root folders?  How to present user data as files and folders in root folders? 
 
-## Implementating your Gateway
+## Implementing your Gateway
 A Storage Gateway is a web service implementing the [Gateway API](https://github.com/odrive/gateway-api/blob/main/gateway-api.md). Implement the gateway endpoints in any web application platform.
 
 1. Implement the AUTH endpoints to support authorizing users and getting access tokens.
