@@ -16,12 +16,16 @@ Use the shell as a terminal command or start an interactive session with path co
 
 Call Gateway Shell with a command to execute once.
 ```
-show me the money
+% gws.exe pwd
+/gateway/devserver
+
+% 
 ```
 
 Call Gateway Shell without any commands to start an interactive session.
 ```
-show me the money
+% gws.exe
+explorer> 
 ```
 
 ## Connect Gateway
