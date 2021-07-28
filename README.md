@@ -26,10 +26,8 @@ Please refer to the [Gateway API](https://github.com/odrive/gateway-api/blob/mai
 
 ## Testing your Gateway
 Use the following applications to access and exercise your gateway implementation:
-- Gateway Shell - Interactive command-line interface.
+- [Gateway Shell](https://github.com/odrive/gateway-api/blob/main/gateway-shell.md) - Interactive command-line interface.
 - Gateway Sync - Desktop sync folder.
-
-*The test clients are coming soon*
 
 ## Publishing your Gateway
 Make the integration available to odrive. Several options are available:
