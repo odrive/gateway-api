@@ -56,9 +56,9 @@ Sign-in requirements are specific to implementation. Please refer to provider do
 
 Property | Description
 ---------|------------
-`access.token` | Required AUTHORIZATION header for subsequent API requests.
-`refresh.token` | Required to refresh expired access tokens.
-`root.content.id` | The root folder to start browsing. 
+`auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
+`auth.refresh.token` | Required to refresh expired access tokens.
+`auth.metadata.content.id` | The root folder. 
 
 *Status*
 
@@ -72,7 +72,7 @@ Status | Description
 
 ## Sign out
 ```
-DELETE /v2/auth/<access.token>
+DELETE /v2/auth/<auth.access.token>
 ```
 
 **REQUEST**
@@ -81,7 +81,7 @@ DELETE /v2/auth/<access.token>
 
 Property | Description
 ---------|-------------
-`access.token` | Session to sign out.
+`auth.access.token` | Session to sign out.
 
 **RESPONSE**
 
@@ -90,7 +90,7 @@ Property | Description
 Status | Description
 -------|------------
 `200` | OK
-`404` | access.token not found
+`404` | auth.access.token not found
 `429` | Rate limited
 
 ## Refresh expired access token
@@ -104,7 +104,7 @@ POST /v2/auth
 
 Property | Description
 ---------|-------------
-`refresh.token` | Refresh.token from sign in.
+`auth.refresh.token` | auth.refresh.token from sign in.
 
 **RESPONSE**
 
@@ -112,16 +112,16 @@ Property | Description
 
 Property | Description
 ---------|------------
-`access.token` | Required AUTHORIZATION header for subsequent API requests.
-`refresh.token` | Required to refresh expired access tokens.
-`root.content.id` | Root folder to start browsing. 
+`auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
+`auth.refresh.token` | Required to refresh expired access tokens.
+`auth.metadata.content.id` | Root folder to start browsing. 
 
 *Status*
 
 Status | Description
 -------|------------
 `200` | OK
-`400` | Missing refresh.token
+`400` | Missing auth.refresh.token
 `403` | Not allowed
 `429` | Rate limited
 
@@ -129,7 +129,7 @@ Status | Description
 
 ## Download file
 ```
-GET /v2/file/<content.id>
+GET /v2/file/<metadata.content.id>
 ```
 
 **REQUEST**
@@ -138,13 +138,13 @@ GET /v2/file/<content.id>
 
 Property | Description
 ---------|-------------
-`content.id` | File to download.
+`metadata.content.id` | File to download.
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 
 *Body*
 
@@ -165,7 +165,7 @@ Status | Description
 
 ## Download thumbnail
 ```
-GET /v2/file_thumbnail/<content.id>
+GET /v2/file_thumbnail/<metadata.content.id>
 ```
 
 **REQUEST**
@@ -174,13 +174,13 @@ GET /v2/file_thumbnail/<content.id>
 
 Property | Description
 ---------|-------------
-`content.id` | File thumbnail to download.
+`metadata.content.id` | File thumbnail to download.
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 
 **RESPONSE**
 
@@ -203,7 +203,7 @@ Status | Description
 
 ## Create new sub folder
 ```
-POST /v2/metadata_folder/<content.id>
+POST /v2/metadata_folder/<metadata.content.id>
 ```
 
 **REQUEST**
@@ -212,20 +212,20 @@ POST /v2/metadata_folder/<content.id>
 
 Property | Description
 ---------|-------------
-`content.id` | Parent folder
+`metadata.content.id` | Parent folder
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 
 *JSON*
 
 Property | Description
 ---------|-------------
-`content.name` | New folder name
-`content.modified`| Millis since the epoch when the folder was created.
+`metadata.content.name` | New folder name
+`metadata.content.modified`| Millis since the epoch when the folder was created.
 
 **RESPONSE**
 
@@ -233,10 +233,11 @@ Property | Description
 
 Property | Description
 ---------|------------
-`content.id` | New folder
-`content.type`| `folder`
-`content.name`| New folder name
-`content.modified`| Millis since the epoch when the folder was created.
+`metadata.content.id` | New folder
+`metadata.content.parent.id` | Parent folder ID
+`metadata.content.type`| `folder`
+`metadata.content.name`| New folder name
+`metadata.content.modified`| Millis since the epoch when the folder was created.
 
 *Status*
 
@@ -250,7 +251,7 @@ Status | Description
 
 ## Delete content
 ```
-DELETE /v2/metadata/<content.id>
+DELETE /v2/metadata/<metadata.content.id>
 ```
 
 **REQUEST**
@@ -259,19 +260,19 @@ DELETE /v2/metadata/<content.id>
 
 Property | Description
 ---------|-------------
-`content.id` | File or folder to delete
+`metadata.content.id` | File or folder to delete
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 
 *JSON*
 
 Property | Description
 ---------|-------------
-`parent.content.id` | Parent folder
+`metadata.content.parent.id` | Parent folder
 
 **RESPONSE**
 
@@ -287,7 +288,7 @@ Status | Description
 
 ## Get content metadata
 ```
-GET /v2/metadata/<content.id>
+GET /v2/metadata/<metadata.content.id>
 ```
 
 **REQUEST**
@@ -296,24 +297,25 @@ GET /v2/metadata/<content.id>
 
 Property | Description
 ---------|-------------
-`content.id` | File or folder
+`metadata.content.id` | File or folder
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 
 *JSON*
 
 Property | Description
 ---------|------------
-`content.id` | File or folder
-`content.type`| `folder` or `file`
-`content.name`| File or folder name
-`content.modified` | Millis since the epoch
-`file.size`| Total bytes
-`file.hash` | Files with the same hash have the same data
+`metadata.content.id` | File or folder
+`metadata.content.parent.id` | Parent folder ID
+`metadata.content.type`| `folder` or `file`
+`metadata.content.name`| File or folder name
+`metadata.content.modified` | Millis since the epoch
+`metadata.file.size`| Total bytes
+`metadata.file.hash` | Files with the same hash have the same data
 
 **RESPONSE**
 
@@ -329,7 +331,7 @@ Status | Description
 
 ## List folder content metadata
 ```
-GET /v2/metadata_children/<content.id>?page=
+GET /v2/metadata_children/<metadata.content.id>?page=
 ```
 
 **REQUEST**
@@ -338,14 +340,14 @@ GET /v2/metadata_children/<content.id>?page=
 
 Property | Description
 ---------|-------------
-`content.id` | Folder
+`metadata.content.id` | Folder
 `page` | Next page token
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 
 **RESPONSE**
 
@@ -361,12 +363,13 @@ List of metadata properties:
 
 Property | Description
 ---------|------------
-`content.id` | File or folder
-`content.type`| `folder` or `file`
-`content.name`| File or folder name
-`content.modified` | Millis since the epoch
-`file.size`| Total bytes
-`file.hash` | Files with the same hash have the same data
+`metadata.content.id` | File or folder
+`metadata.content.parent.id` | Parent folder ID
+`metadata.content.type`| `folder` or `file`
+`metadata.content.name`| File or folder name
+`metadata.content.modified` | Millis since the epoch
+`metadata.file.size`| Total bytes
+`metadata.file.hash` | Files with the same hash have the same data
 
 *Status*
 
@@ -381,7 +384,7 @@ Status | Description
 
 ## Move content
 ```
-PATCH /v2/metadata_parent/<content.id>
+PATCH /v2/metadata_parent/<metadata.content.id>
 ```
 **REQUEST**
 
@@ -389,20 +392,20 @@ PATCH /v2/metadata_parent/<content.id>
 
 Property | Description
 ---------|-------------
-`content.id` | File or folder to move
+`metadata.content.id` | File or folder to move
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 
 *JSON*
 
 Property | Description
 ---------|-------------
-`parent.content.id` | New folder
-`current.parent.content.id` | Current folder
+`new.metadata.content.parent.id` | New folder
+`old.metadata.content.parent.id` | Current folder
 
 **RESPONSE**
 
@@ -410,12 +413,13 @@ Property | Description
 
 Property | Description
 ---------|------------
-`content.id` | File or folder ID
-`content.type`| `file` or `folder`
-`content.name`| File or folder name
-`content.modified` | Millis since the epoch
-`file.size`| Total bytes (File Only)
-`file.hash` | Files with the same hash have the same bytes
+`metadata.content.id` | File or folder ID
+`metadata.content.parent.id` | Parent folder ID
+`metadata.content.type`| `file` or `folder`
+`metadata.content.name`| File or folder name
+`metadata.content.modified` | Millis since the epoch
+`metadata.file.size`| Total bytes (File Only)
+`metadata.file.hash` | Files with the same hash have the same bytes
 
 *Status*
 
@@ -429,7 +433,7 @@ Status | Description
 
 ## Rename content
 ```
-PATCH /v2/metadata_name/<content.id>
+PATCH /v2/metadata_name/<metadata.content.id>
 ```
 
 **REQUEST**
@@ -438,19 +442,19 @@ PATCH /v2/metadata_name/<content.id>
 
 Property | Description
 ---------|-------------
-`content.id` | File or folder to rename
+`metadata.content.id` | File or folder to rename
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 
 *JSON*
 
 Property | Description
 ---------|-------------
-`content.name` | New name
+`metadata.content.name` | New name
 
 **RESPONSE**
 
@@ -458,12 +462,13 @@ Property | Description
 
 Property | Description
 ---------|------------
-`content.id` | File or folder ID
-`content.type`| `file` or `folder`
-`content.name`| File or folder name
-`content.modified` | Millis since the epoch (File Only)
-`file.size`| Total bytes (File Only)
-`file.hash` | Files with the same hash have the same bytes
+`metadata.content.id` | File or folder ID
+`metadata.content.parent.id` | Parent folder ID
+`metadata.content.type`| `file` or `folder`
+`metadata.content.name`| File or folder name
+`metadata.content.modified` | Millis since the epoch (File Only)
+`metadata.file.size`| Total bytes (File Only)
+`metadata.file.hash` | Files with the same hash have the same bytes
 
 *Status*
 
@@ -478,7 +483,7 @@ Status | Description
 
 ## Upload new file
 ```
-POST /v2/metadata_file/<content.id>
+POST /v2/metadata_file/<metadata.content.id>
 ```
 
 **REQUEST**
@@ -487,22 +492,22 @@ POST /v2/metadata_file/<content.id>
 
 Property | Description
 ---------|-------------
-`content.id` | Parent folder
+`metadata.content.id` | Parent folder
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 `X-Gateway-Upload` | Special file upload JSON (see below).
 
 *X-Gateway-Upload*
 
 Property | Description
 ---------|-------------
-`content.name` | New file name
-`content.modified` | New file modified time (Millis since the epoch)
-`file.size` | New file size
+`metadata.content.name` | New file name
+`metadata.content.modified` | New file modified time (Millis since the epoch)
+`metadata.file.size` | New file size
 
 *Body*
 
@@ -514,12 +519,13 @@ The file binary stream.
 
 Property | Description
 ---------|------------
-`content.id` | File ID
-`content.type`| `file`
-`content.name`| File name
-`content.modified` | Millis since the epoch
-`file.size`| Total bytes
-`file.hash` | Files with the same hash have the same bytes
+`metadata.content.id` | File ID
+`metadata.content.parent.id` | Parent folder ID
+`metadata.content.type`| `file`
+`metadata.content.name`| File name
+`metadata.content.modified` | Millis since the epoch
+`metadata.file.size`| Total bytes
+`metadata.file.hash` | Files with the same hash have the same bytes
 
 *Status*
 
@@ -533,7 +539,7 @@ Status | Description
 
 ## Update existing file
 ```
-PUT /v2/metadata/<content.id>
+PUT /v2/metadata/<metadata.content.id>
 ```
 
 **REQUEST**
@@ -542,21 +548,21 @@ PUT /v2/metadata/<content.id>
 
 Property | Description
 ---------|-------------
-`content.id` | File to update
+`metadata.content.id` | File to update
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
 `X-Gateway-Upload` | Special file upload JSON (see below).
 
 *X-Gateway-Upload*
 
 Property | Description
 ---------|-------------
-`content.modified` | Updated modified time (Millis since the epoch)
-`file.size` | Updated file size
+`metadata.content.modified` | Updated modified time (Millis since the epoch)
+`metadata.file.size` | Updated file size
 
 *Body*
 
@@ -568,12 +574,13 @@ The file binary stream.
 
 Property | Description
 ---------|------------
-`content.id` | File
-`content.type`| `file`
-`content.name`| File name
-`content.modified` | Millis since the epoch
-`file.size`| Total bytes
-`file.hash` | Files with the same hash have the same data
+`metadata.content.id` | File
+`metadata.content.parent.id` | Parent folder ID
+`metadata.content.type`| `file`
+`metadata.content.name`| File name
+`metadata.content.modified` | Millis since the epoch
+`metadata.file.size`| Total bytes
+`metadata.file.hash` | Files with the same hash have the same data
 
 *Status*
 
