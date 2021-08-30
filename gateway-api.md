@@ -384,7 +384,7 @@ Status | Description
 
 ## Move content
 ```
-PATCH /v2/metadata_parent/<metadata.content.id>
+PATCH /v2/metadata_content_parent/<metadata.content.id>
 ```
 **REQUEST**
 
@@ -433,7 +433,7 @@ Status | Description
 
 ## Rename content
 ```
-PATCH /v2/metadata_name/<metadata.content.id>
+PATCH /v2/metadata_content_name/<metadata.content.id>
 ```
 
 **REQUEST**
