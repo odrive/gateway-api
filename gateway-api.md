@@ -454,7 +454,8 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`metadata.content.name` | New name
+`new.metadata.content.name` | New name
+`old.metadata.content.name` | Current name
 
 **RESPONSE**
 
