@@ -2,9 +2,9 @@
 Access gateways from the command line with Gateway Shell. You can interactively access storage or create scripts to automate storage management. Gateway Shell lets you connect to gateways, make folders, and browse, download, upload, rename, move, copy files.
 
 ## Download
-- [Windows Gateway Shell](https://s3.amazonaws.com/cdn.odrive.com/gws/win-gws-1.zip)
-- [Mac Gateway Shell](https://s3.amazonaws.com/cdn.odrive.com/gws/mac-gws-1.zip)
-- [Linux Gateway Shell](https://s3.amazonaws.com/cdn.odrive.com/gws/linux-gws-1.tar.gz)
+- [Windows Gateway Shell](https://s3.amazonaws.com/cdn.odrive.com/gws/win-gws-2.zip)
+- [Mac Gateway Shell](https://s3.amazonaws.com/cdn.odrive.com/gws/mac-gws-2.zip)
+- [Linux Gateway Shell](https://s3.amazonaws.com/cdn.odrive.com/gws/linux64-gws-2.tar.gz)
 
 ## Install
 Gateway Shell is an executable. Place the program anywhere and add it to the default path. The shell will create a hidden folder in the user's home directory (`~/.gws`) to contain its configuration and working data.
