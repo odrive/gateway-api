@@ -340,7 +340,7 @@ GET /v2/gateway_metadata_children/<gateway.metadata.id>?page=
 
 Property | Description
 ---------|-------------
-`gateway,metadata.id` | Folder
+`gateway.metadata.id` | Folder
 `page` | Next page token
 
 *Header*
@@ -448,7 +448,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
