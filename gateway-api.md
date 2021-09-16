@@ -114,7 +114,7 @@ Property | Description
 ---------|------------
 `gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
 `gateway.auth.refresh.token` | Required to refresh expired access tokens.
-`gateway.auth.metadata.content.id` | Root folder to start browsing. 
+`gateway.auth.metadata.id` | Root folder to start browsing. 
 
 *Status*
 
