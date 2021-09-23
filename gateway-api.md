@@ -427,7 +427,7 @@ Status | Description
 
 ## Rename content
 ```
-PUT /v2/gateway_metadata_content_name/<gateway.metadata.id>
+PUT /v2/gateway_metadata_name/<gateway.metadata.id>
 ```
 
 **REQUEST**
