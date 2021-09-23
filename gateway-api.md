@@ -384,7 +384,7 @@ Status | Description
 
 ## Move content
 ```
-PATCH /v2/gateway_metadata_parent/<gateway.metadata.id>
+PUT /v2/gateway_metadata_parent/<gateway.metadata.id>
 ```
 **REQUEST**
 
@@ -413,13 +413,7 @@ Property | Description
 
 Property | Description
 ---------|------------
-`gateway.metadata.id` | File or folder ID
 `gateway.metadata.parent.id` | Parent folder ID
-`gateway.metadata.type`| `file` or `folder`
-`gateway.metadata.name`| File or folder name
-`gateway.metadata.modified` | Millis since the epoch
-`gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same bytes
 
 *Status*
 
@@ -433,7 +427,7 @@ Status | Description
 
 ## Rename content
 ```
-PATCH /v2/gateway_metadata_content_name/<gateway.metadata.id>
+PUT /v2/gateway_metadata_content_name/<gateway.metadata.id>
 ```
 
 **REQUEST**
@@ -463,13 +457,7 @@ Property | Description
 
 Property | Description
 ---------|------------
-`gateway.metadata.id` | File or folder ID
-`gateway.metadata.parent.id` | Parent folder ID
-`gateway.metadata.type`| `file` or `folder`
 `gateway.metadata.name`| File or folder name
-`gateway.metadata.modified` | Millis since the epoch
-`gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same bytes
 
 *Status*
 
