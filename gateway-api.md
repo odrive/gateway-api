@@ -4,44 +4,53 @@ The Gateway API specifies how odrive authorizes users and accesses storage. A St
 
 ## Integration Model
 A Storage Gateway enables odrive access to its source system. It
-maps its source data into a virtual, hierarchical file system represented by FILE and METADATA resources. 
+maps its source data into a virtual, hierarchical file system represented as `gateway.file` and `gateway.metadata` resources. 
 
 A Storage Gateway's file system is navigable. Upon authorization, the gateway returns the session root folder as the starting point for browsing.
 
-## API Resources
+## Representational States
 
-**AUTH**
+**gateway.auth**
 
-AUTH objects represent the gateway's access authorization. AUTH endpoints support:
-- Signing in
-- Signing out
-- Refreshing access tokens
+`gateway.auth` represents a storage gateway's access authorization.
 
-**FILE**
+Use Case | Endpoint
+---------|------------
+Sign in | `POST /v2/gateway_auth`
+Sign out | `DELETE /v2/gateway_auth/<gateway.auth.access.token>`
+Refresh expired access token | `POST /v2/gateway_auth`
 
-FILE objects represent the binary file data. FILE endpoints support:
-- Downloading files
-- Downloading thumbnails
+**gateway.file**
 
-**METADATA**
+`gateway.file` represent the binary file data.
 
-METADATA resource represents the properties of files and folders. METADATA endpoints support:
-- Listing folder content
-- Getting properties
-- Creating folders
-- Uploading files
-- Updating files
-- Moving files or folders
-- Rename files or folders
-- Delete files or folders
+Use Case | Endpoint
+---------|------------
+Download file | `GET /v2/gateway_file/<gateway.metadata.id>`
+Download file thumbnail | `GET /v2/gateway_file_thumbnail/<gateway.metadata.id>`
+
+**gateway.metadata**
+
+`gateway.metadata` represents a file or folder.
+
+Use Case | Endpoint
+---------|------------
+List folder content | `GET /v2/gateway_metadata_children/<gateway.metadata.id>?page=`
+Get file or folder properties | `GET /v2/gateway_metadata/<gateway.metadata.id>`
+Create folders | `POST /v2/gateway_metadata_folder/<gateway.metadata.id>`
+Upload files | `POST /v2/gateway_metadata_file/<gateway.metadata.id>`
+Update files | `PUT /v2/gateway_metadata_file/<gateway.metadata.id>`
+Move files or folders | `PUT /v2/gateway_metadata_parent/<gateway.metadata.id>`
+Rename files or folders | `PUT /v2/gateway_metadata_name/<gateway.metadata.id>`
+Delete files or folders | `DELETE /v2/gateway_metadata/<gateway.metadata.id>`
 
 # API Endpoints
 
-# AUTH
+# gateway.auth
 
 ## Sign in
 ```
-POST /v2/auth
+POST /v2/gateway_auth
 ```
 
 **REQUEST**
@@ -56,9 +65,9 @@ Sign-in requirements are specific to implementation. Please refer to provider do
 
 Property | Description
 ---------|------------
-`auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
-`auth.refresh.token` | Required to refresh expired access tokens.
-`auth.metadata.content.id` | The root folder. 
+`gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
+`gateway.auth.refresh.token` | Required to refresh expired access tokens.
+`gateway.auth.metadata.content.id` | The root folder. 
 
 *Status*
 
@@ -72,7 +81,7 @@ Status | Description
 
 ## Sign out
 ```
-DELETE /v2/auth/<auth.access.token>
+DELETE /v2/gateway_auth/<gateway.auth.access.token>
 ```
 
 **REQUEST**
@@ -81,7 +90,7 @@ DELETE /v2/auth/<auth.access.token>
 
 Property | Description
 ---------|-------------
-`auth.access.token` | Session to sign out.
+`gateway.auth.access.token` | Session to sign out.
 
 **RESPONSE**
 
@@ -90,12 +99,12 @@ Property | Description
 Status | Description
 -------|------------
 `200` | OK
-`404` | auth.access.token not found
+`404` | gateway.auth.access.token not found
 `429` | Rate limited
 
 ## Refresh expired access token
 ```
-POST /v2/auth
+POST /v2/gateway_auth
 ```
 
 **REQUEST**
@@ -104,7 +113,7 @@ POST /v2/auth
 
 Property | Description
 ---------|-------------
-`auth.refresh.token` | auth.refresh.token from sign in.
+`gateway.auth.refresh.token` | token from sign in.
 
 **RESPONSE**
 
@@ -112,24 +121,24 @@ Property | Description
 
 Property | Description
 ---------|------------
-`auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
-`auth.refresh.token` | Required to refresh expired access tokens.
-`auth.metadata.content.id` | Root folder to start browsing. 
+`gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
+`gateway.auth.refresh.token` | Required to refresh expired access tokens.
+`gateway.auth.metadata.id` | Root folder to start browsing. 
 
 *Status*
 
 Status | Description
 -------|------------
 `200` | OK
-`400` | Missing auth.refresh.token
+`400` | Missing gateway.auth.refresh.token
 `403` | Not allowed
 `429` | Rate limited
 
-# FILE
+# gateway.file
 
 ## Download file
 ```
-GET /v2/file/<metadata.content.id>
+GET /v2/gateway_file/<gateway.metadata.id>
 ```
 
 **REQUEST**
@@ -138,13 +147,13 @@ GET /v2/file/<metadata.content.id>
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | File to download.
+`gateway.metadata.id` | File to download.
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *Body*
 
@@ -165,7 +174,7 @@ Status | Description
 
 ## Download thumbnail
 ```
-GET /v2/file_thumbnail/<metadata.content.id>
+GET /v2/gateway_file_thumbnail/<gateway.metadata.id>
 ```
 
 **REQUEST**
@@ -174,13 +183,13 @@ GET /v2/file_thumbnail/<metadata.content.id>
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | File thumbnail to download.
+`gateway.metadata.id` | File thumbnail to download.
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -199,11 +208,11 @@ Status | Description
 `404` | Not found
 `429` | Rate limited
 
-# METADATA
+# gateway.metadata
 
-## Create new sub folder
+## Create new folder
 ```
-POST /v2/metadata_folder/<metadata.content.id>
+POST /v2/gateway_metadata_folder/<gateway.metadata.id>
 ```
 
 **REQUEST**
@@ -212,20 +221,20 @@ POST /v2/metadata_folder/<metadata.content.id>
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | Parent folder
+`gateway.metadata.id` | Parent folder
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
 Property | Description
 ---------|-------------
-`metadata.content.name` | New folder name
-`metadata.content.modified`| Millis since the epoch when the folder was created.
+`gateway.metadata.name` | New folder name
+`gateway.metadata.modified`| Millis since the epoch when the folder was created.
 
 **RESPONSE**
 
@@ -233,11 +242,11 @@ Property | Description
 
 Property | Description
 ---------|------------
-`metadata.content.id` | New folder
-`metadata.content.parent.id` | Parent folder ID
-`metadata.content.type`| `folder`
-`metadata.content.name`| New folder name
-`metadata.content.modified`| Millis since the epoch when the folder was created.
+`gateway.metadata.id` | New folder
+`gateway.metadata.parent.id` | Parent folder ID
+`gateway.metadata.type`| `folder`
+`gateway.metadata.name`| New folder name
+`gateway.metadata.modified`| Millis since the epoch when the folder was created.
 
 *Status*
 
@@ -251,7 +260,7 @@ Status | Description
 
 ## Delete content
 ```
-DELETE /v2/metadata/<metadata.content.id>
+DELETE /v2/gateway_metadata/<gateway.metadata.id>
 ```
 
 **REQUEST**
@@ -260,19 +269,19 @@ DELETE /v2/metadata/<metadata.content.id>
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | File or folder to delete
+`gateway.metadata.id` | File or folder to delete
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
 Property | Description
 ---------|-------------
-`metadata.content.parent.id` | Parent folder
+`gateway.metadata.parent.id` | Parent folder
 
 **RESPONSE**
 
@@ -288,7 +297,7 @@ Status | Description
 
 ## Get content metadata
 ```
-GET /v2/metadata/<metadata.content.id>
+GET /v2/gateway_metadata/<gateway.metadata.id>
 ```
 
 **REQUEST**
@@ -297,27 +306,27 @@ GET /v2/metadata/<metadata.content.id>
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | File or folder
+`gateway.metadata.id` | File or folder
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+
+**RESPONSE**
 
 *JSON*
 
 Property | Description
 ---------|------------
-`metadata.content.id` | File or folder
-`metadata.content.parent.id` | Parent folder ID
-`metadata.content.type`| `folder` or `file`
-`metadata.content.name`| File or folder name
-`metadata.content.modified` | Millis since the epoch
-`metadata.file.size`| Total bytes
-`metadata.file.hash` | Files with the same hash have the same data
-
-**RESPONSE**
+`gateway.metadata.id` | File or folder
+`gateway.metadata.parent.id` | Parent folder ID
+`gateway.metadata.type`| `folder` or `file`
+`gateway.metadata.name`| File or folder name
+`gateway.metadata.modified` | Millis since the epoch
+`gateway.metadata.file.size`| Total bytes
+`gateway.metadata.file.hash` | Files with the same hash have the same data
 
 *Status*
 
@@ -331,7 +340,7 @@ Status | Description
 
 ## List folder content metadata
 ```
-GET /v2/metadata_children/<metadata.content.id>?page=
+GET /v2/gateway_metadata_children/<gateway.metadata.id>?page=
 ```
 
 **REQUEST**
@@ -340,14 +349,14 @@ GET /v2/metadata_children/<metadata.content.id>?page=
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | Folder
+`gateway.metadata.id` | Folder
 `page` | Next page token
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -363,13 +372,13 @@ List of metadata properties:
 
 Property | Description
 ---------|------------
-`metadata.content.id` | File or folder
-`metadata.content.parent.id` | Parent folder ID
-`metadata.content.type`| `folder` or `file`
-`metadata.content.name`| File or folder name
-`metadata.content.modified` | Millis since the epoch
-`metadata.file.size`| Total bytes
-`metadata.file.hash` | Files with the same hash have the same data
+`gateway.metadata.id` | File or folder
+`gateway.metadata.parent.id` | Parent folder ID
+`gateway.metadata.type`| `folder` or `file`
+`gateway.metadata.name`| File or folder name
+`gateway.metadata.modified` | Millis since the epoch
+`gateway.metadata.file.size`| Total bytes
+`gateway.metadata.file.hash` | Files with the same hash have the same data
 
 *Status*
 
@@ -384,7 +393,7 @@ Status | Description
 
 ## Move content
 ```
-PATCH /v2/metadata_content_parent/<metadata.content.id>
+PUT /v2/gateway_metadata_parent/<gateway.metadata.id>
 ```
 **REQUEST**
 
@@ -392,20 +401,20 @@ PATCH /v2/metadata_content_parent/<metadata.content.id>
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | File or folder to move
+`gateway.metadata.id` | File or folder to move
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
 Property | Description
 ---------|-------------
-`new.metadata.content.parent.id` | New folder
-`old.metadata.content.parent.id` | Current folder
+`new.gateway.metadata.parent.id` | New folder
+`old.gateway.metadata.parent.id` | Current folder
 
 **RESPONSE**
 
@@ -413,13 +422,7 @@ Property | Description
 
 Property | Description
 ---------|------------
-`metadata.content.id` | File or folder ID
-`metadata.content.parent.id` | Parent folder ID
-`metadata.content.type`| `file` or `folder`
-`metadata.content.name`| File or folder name
-`metadata.content.modified` | Millis since the epoch
-`metadata.file.size`| Total bytes (File Only)
-`metadata.file.hash` | Files with the same hash have the same bytes
+`gateway.metadata.parent.id` | Parent folder ID
 
 *Status*
 
@@ -433,7 +436,7 @@ Status | Description
 
 ## Rename content
 ```
-PATCH /v2/metadata_content_name/<metadata.content.id>
+PUT /v2/gateway_metadata_name/<gateway.metadata.id>
 ```
 
 **REQUEST**
@@ -442,20 +445,20 @@ PATCH /v2/metadata_content_name/<metadata.content.id>
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | File or folder to rename
+`gateway.metadata.id` | File or folder to rename
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
 Property | Description
 ---------|-------------
-`new.metadata.content.name` | New name
-`old.metadata.content.name` | Current name
+`new.gateway.metadata.name` | New name
+`old.gateway.metadata.name` | Current name
 
 **RESPONSE**
 
@@ -463,13 +466,7 @@ Property | Description
 
 Property | Description
 ---------|------------
-`metadata.content.id` | File or folder ID
-`metadata.content.parent.id` | Parent folder ID
-`metadata.content.type`| `file` or `folder`
-`metadata.content.name`| File or folder name
-`metadata.content.modified` | Millis since the epoch (File Only)
-`metadata.file.size`| Total bytes (File Only)
-`metadata.file.hash` | Files with the same hash have the same bytes
+`gateway.metadata.name`| File or folder name
 
 *Status*
 
@@ -484,7 +481,7 @@ Status | Description
 
 ## Upload new file
 ```
-POST /v2/metadata_file/<metadata.content.id>
+POST /v2/gateway_metadata_file/<gateway.metadata.id>
 ```
 
 **REQUEST**
@@ -493,22 +490,22 @@ POST /v2/metadata_file/<metadata.content.id>
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | Parent folder
+`gateway.metadata.id` | Parent folder
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 `X-Gateway-Upload` | Special file upload JSON (see below).
 
 *X-Gateway-Upload*
 
 Property | Description
 ---------|-------------
-`metadata.content.name` | New file name
-`metadata.content.modified` | New file modified time (Millis since the epoch)
-`metadata.file.size` | New file size
+`gateway.metadata.name` | New file name
+`gateway.metadata.modified` | New file modified time (Millis since the epoch)
+`gateway.metadata.file.size` | New file size
 
 *Body*
 
@@ -520,13 +517,13 @@ The file binary stream.
 
 Property | Description
 ---------|------------
-`metadata.content.id` | File ID
-`metadata.content.parent.id` | Parent folder ID
-`metadata.content.type`| `file`
-`metadata.content.name`| File name
-`metadata.content.modified` | Millis since the epoch
-`metadata.file.size`| Total bytes
-`metadata.file.hash` | Files with the same hash have the same bytes
+`gateway.metadata.id` | File ID
+`gateway.metadata.parent.id` | Parent folder ID
+`gateway.metadata.type`| `file`
+`gateway.metadata.name`| File name
+`gateway.metadata.modified` | Millis since the epoch
+`gateway.metadata.file.size`| Total bytes
+`gateway.metadata.file.hash` | Files with the same hash have the same bytes
 
 *Status*
 
@@ -540,7 +537,7 @@ Status | Description
 
 ## Update existing file
 ```
-PUT /v2/metadata/<metadata.content.id>
+PUT /v2/gateway_metadata_file/<gateway.metadata.id>
 ```
 
 **REQUEST**
@@ -549,21 +546,21 @@ PUT /v2/metadata/<metadata.content.id>
 
 Property | Description
 ---------|-------------
-`metadata.content.id` | File to update
+`gateway.metadata.id` | File to update
 
 *Header*
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <auth.access.token>`
+`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 `X-Gateway-Upload` | Special file upload JSON (see below).
 
 *X-Gateway-Upload*
 
 Property | Description
 ---------|-------------
-`metadata.content.modified` | Updated modified time (Millis since the epoch)
-`metadata.file.size` | Updated file size
+`gateway.metadata.modified` | Updated modified time (Millis since the epoch)
+`gateway.metadata.file.size` | Updated file size
 
 *Body*
 
@@ -575,13 +572,13 @@ The file binary stream.
 
 Property | Description
 ---------|------------
-`metadata.content.id` | File
-`metadata.content.parent.id` | Parent folder ID
-`metadata.content.type`| `file`
-`metadata.content.name`| File name
-`metadata.content.modified` | Millis since the epoch
-`metadata.file.size`| Total bytes
-`metadata.file.hash` | Files with the same hash have the same data
+`gateway.metadata.id` | File
+`gateway.metadata.parent.id` | Parent folder ID
+`gateway.metadata.type`| `file`
+`gateway.metadata.name`| File name
+`gateway.metadata.modified` | Millis since the epoch
+`gateway.metadata.file.size`| Total bytes
+`gateway.metadata.file.hash` | Files with the same hash have the same data
 
 *Status*
 
