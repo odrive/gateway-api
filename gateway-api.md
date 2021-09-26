@@ -4,40 +4,49 @@ The Gateway API specifies how odrive authorizes users and accesses storage. A St
 
 ## Integration Model
 A Storage Gateway enables odrive access to its source system. It
-maps its source data into a virtual, hierarchical file system represented by FILE and METADATA resources. 
+maps its source data into a virtual, hierarchical file system represented as `gateway.file` and `gateway.metadata` resources. 
 
 A Storage Gateway's file system is navigable. Upon authorization, the gateway returns the session root folder as the starting point for browsing.
 
-## API Resources
+## Representational States
 
-**AUTH**
+**gateway.auth**
 
-AUTH objects represent the gateway's access authorization. AUTH endpoints support:
-- Signing in
-- Signing out
-- Refreshing access tokens
+`gateway.auth` represents a storage gateway's access authorization.
 
-**FILE**
+Use Case | Endpoint
+---------|------------
+Sign in | `POST /v2/gateway_auth`
+Sign out | `DELETE /v2/gateway_auth/<gateway.auth.access.token>`
+Refresh expired access token | `POST /v2/gateway_auth`
 
-FILE objects represent the binary file data. FILE endpoints support:
-- Downloading files
-- Downloading thumbnails
+**gateway.file**
 
-**METADATA**
+`gateway.file` represent the binary file data.
 
-METADATA resource represents the properties of files and folders. METADATA endpoints support:
-- Listing folder content
-- Getting properties
-- Creating folders
-- Uploading files
-- Updating files
-- Moving files or folders
-- Rename files or folders
-- Delete files or folders
+Use Case | Endpoint
+---------|------------
+Download file | `GET /v2/gateway_file/<gateway.metadata.id>`
+Download file thumbnail | `GET /v2/gateway_file_thumbnail/<gateway.metadata.id>`
+
+**gateway.metadata**
+
+`gateway.metadata` represents a file or folder.
+
+Use Case | Endpoint
+---------|------------
+List folder content | `GET /v2/gateway_metadata_children/<gateway.metadata.id>?page=`
+Get file or folder properties | `GET /v2/gateway_metadata/<gateway.metadata.id>`
+Create folders | `POST /v2/gateway_metadata_folder/<gateway.metadata.id>`
+Upload files | `POST /v2/gateway_metadata_file/<gateway.metadata.id>`
+Update files | `PUT /v2/gateway_metadata_file/<gateway.metadata.id>`
+Move files or folders | `PUT /v2/gateway_metadata_parent/<gateway.metadata.id>`
+Rename files or folders | `PUT /v2/gateway_metadata_name/<gateway.metadata.id>`
+Delete files or folders | `DELETE /v2/gateway_metadata/<gateway.metadata.id>`
 
 # API Endpoints
 
-# AUTH
+# gateway.auth
 
 ## Sign in
 ```
@@ -125,7 +134,7 @@ Status | Description
 `403` | Not allowed
 `429` | Rate limited
 
-# FILE
+# gateway.file
 
 ## Download file
 ```
@@ -199,9 +208,9 @@ Status | Description
 `404` | Not found
 `429` | Rate limited
 
-# METADATA
+# gateway.metadata
 
-## Create new sub folder
+## Create new folder
 ```
 POST /v2/gateway_metadata_folder/<gateway.metadata.id>
 ```
