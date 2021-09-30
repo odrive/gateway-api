@@ -420,8 +420,11 @@ Property | Description
 
 *JSON*
 
+List of updated metadata properties, including but not limited to the following:
+
 Property | Description
 ---------|------------
+`gateway.metadata.id` | File or folder ID
 `gateway.metadata.parent.id` | Parent folder ID
 
 *Status*
@@ -464,8 +467,11 @@ Property | Description
 
 *JSON*
 
+List of updated metadata properties, including but not limited to the following:
+
 Property | Description
 ---------|------------
+`gateway.metadata.id` | File or folder ID
 `gateway.metadata.name`| File or folder name
 
 *Status*
