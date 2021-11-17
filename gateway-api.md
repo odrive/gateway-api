@@ -104,7 +104,7 @@ Status | Description
 
 ## Refresh expired access token
 ```
-POST /v2/gateway_auth
+POST /v2/gateway_auth_access
 ```
 
 **REQUEST**
@@ -123,7 +123,6 @@ Property | Description
 ---------|------------
 `gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
 `gateway.auth.refresh.token` | Required to refresh expired access tokens.
-`gateway.auth.metadata.id` | Root folder to start browsing. 
 
 *Status*
 
