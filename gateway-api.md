@@ -68,23 +68,23 @@ Property | Description
 `gateway.auth.oauth.url` | Redirect users to this url to sign in.
 `gateway.auth.oauth.state` | Use this state code to authize access after user sign in. 
 
-Credential Method:
+FORM Method:
 
 *JSON*
 
 Property | Description
 ---------|------------
-`gateway.auth.credential` | True
-`gateway.auth.credential.input.fields` | List of `gateway.auth.credential.input.fields` for authorizing access.
+`gateway.auth.form` | True
+`gateway.auth.form.input.fields` | List of `gateway.auth.credential.input.fields` for authorizing access.
 
 *gateway.auth.credential.input.fields*
 
 Property | Description
 ---------|------------
-`gateway.auth.credential.input.field.name` | Authorization parameter name.
-`gateway.auth.credential.input.field.instruction` | Optional user instruction for inputing the parameter value.
-`gateway.auth.credential.input.field.required` | True if required for authorization.
-`gateway.auth.credential.input.field.order` | The sort order for displaying this field.
+`gateway.auth.form.input.field.name` | Authorization parameter name.
+`gateway.auth.form.input.field.instruction` | Optional user instruction for inputing the parameter value.
+`gateway.auth.form.input.field.required` | True if required for authorization.
+`gateway.auth.form.input.field.order` | The sort order for displaying the input field in a form.
 
 
 *Status*
@@ -132,7 +132,7 @@ Status | Description
 `429` | Rate limited
 
 
-## Sign in with credential method
+## Sign in with FORM method
 ```
 POST /v2/gateway_auth
 ```
@@ -141,7 +141,7 @@ POST /v2/gateway_auth
 
 *JSON*
 
-Submit the user reponse to the required credential fields. Format the request as JSON post with the field name as the key and user input as the value.
+Submit the user reponse to the required form input fields. Format the request as JSON post with the field name as the key and user input as the value.
 
 
 **RESPONSE**
