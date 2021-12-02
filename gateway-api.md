@@ -16,7 +16,8 @@ A Storage Gateway's file system is navigable. Upon authorization, the gateway re
 
 Use Case | Endpoint
 ---------|------------
-Sign in | `POST /v2/gateway_auth`
+Discover available sign-in methods | `GET /v2/gateway_auth_method`
+Sign in with supported method | `POST /v2/gateway_auth`
 Sign out | `DELETE /v2/gateway_auth/<gateway.auth.access.token>`
 Refresh expired access token | `POST /v2/gateway_auth`
 
@@ -48,7 +49,56 @@ Delete files or folders | `DELETE /v2/gateway_metadata/<gateway.metadata.id>`
 
 # gateway.auth
 
-## Sign in
+## Discover available sign-in methods
+```
+GET /v2/gateway_auth_method
+```
+
+**RESPONSE**
+
+There are two sign-in methods. The gateway responds with the keys for the supported method.
+
+OAUTH Method:
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.auth.oauth` | True
+`gateway.auth.oauth.url` | Redirect users to this url to sign in.
+`gateway.auth.oauth.state` | Use this state code to authize access after user sign in. 
+
+Credential Method:
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.auth.credential` | True
+`gateway.auth.credential.keys` | List of `gateway.auth.credential.key` parameters to authorize access.
+
+*gateway.auth.credential.key*
+
+Property | Description
+---------|------------
+`gateway.auth.credential.key.name` | Parameter name.
+`gateway.auth.credential.key.description` | Optional user information.
+`gateway.auth.credential.key.required` | True if required for authorization.
+`gateway.auth.credential.key.order` | Display order.
+
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`400` | Missing credential
+`403` | Invalid credential
+`403` | Not allowed
+`429` | Rate limited
+
+
+## Sign in with OAUTH method
 ```
 POST /v2/gateway_auth
 ```
@@ -57,7 +107,44 @@ POST /v2/gateway_auth
 
 *JSON*
 
-Sign-in requirements are specific to implementation. Please refer to provider documentation.
+Property | Description
+---------|------------
+`gateway.auth.oauth.state` | The state code provided from the method specification.
+
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
+`gateway.auth.refresh.token` | Required to refresh expired access tokens.
+`gateway.auth.metadata.content.id` | The root folder. 
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`400` | Missing oauth state
+`403` | Not authorized
+`429` | Rate limited
+
+
+## Sign in with credential method
+```
+POST /v2/gateway_auth
+```
+
+**REQUEST**
+
+*JSON*
+
+Property | Description
+---------|------------
+<key name> | The user input for the credential key name specified by method.
+
 
 **RESPONSE**
 
@@ -76,7 +163,6 @@ Status | Description
 `200` | OK
 `400` | Missing credential
 `403` | Invalid credential
-`403` | Not allowed
 `429` | Rate limited
 
 ## Sign out
