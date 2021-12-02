@@ -75,16 +75,16 @@ Credential Method:
 Property | Description
 ---------|------------
 `gateway.auth.credential` | True
-`gateway.auth.credential.keys` | List of `gateway.auth.credential.key` parameters to authorize access.
+`gateway.auth.credential.input.fields` | List of `gateway.auth.credential.input.fields` for authorizing access.
 
-*gateway.auth.credential.key*
+*gateway.auth.credential.input.fields*
 
 Property | Description
 ---------|------------
-`gateway.auth.credential.key.name` | Parameter name.
-`gateway.auth.credential.key.description` | Optional user information.
-`gateway.auth.credential.key.required` | True if required for authorization.
-`gateway.auth.credential.key.order` | Display order.
+`gateway.auth.credential.input.field.name` | Authorization parameter name.
+`gateway.auth.credential.input.field.instruction` | Optional user instruction for inputing the parameter value.
+`gateway.auth.credential.input.field.required` | True if required for authorization.
+`gateway.auth.credential.input.field.order` | The sort order for displaying this field.
 
 
 *Status*
@@ -141,9 +141,7 @@ POST /v2/gateway_auth
 
 *JSON*
 
-Property | Description
----------|------------
-<key name> | The user input for the credential key name specified by method.
+Submit the user reponse to the required credential fields. Format the request as JSON post with the field name as the key and user input as the value.
 
 
 **RESPONSE**
