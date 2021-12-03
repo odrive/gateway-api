@@ -84,7 +84,7 @@ Property | Description
 `gateway.auth.form.input.field.prompt` | Question or instrution for user.
 `gateway.auth.form.input.field.name` | Authorization parameter name.
 `gateway.auth.form.input.field.required` | True if required for authorization.
-`gateway.auth.form.input.field.order` | The sort order for displaying the input field in a form.
+`gateway.auth.form.input.field.order` | The sort order for displaying the input fields in a form.
 
 
 *Status*
