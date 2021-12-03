@@ -16,7 +16,7 @@ A Storage Gateway's file system is navigable. Upon authorization, the gateway re
 
 Use Case | Endpoint
 ---------|------------
-Discover available sign-in methods | `GET /v2/gateway_auth_method`
+Determin the sign-in method | `GET /v2/gateway_auth_method`
 Sign in with supported method | `POST /v2/gateway_auth`
 Sign out | `DELETE /v2/gateway_auth/<gateway.auth.access.token>`
 Refresh expired access token | `POST /v2/gateway_auth`
@@ -64,7 +64,7 @@ OAUTH Method:
 
 Property | Description
 ---------|------------
-`gateway.auth.oauth` | True
+`gateway.auth.method` | `oauth`
 `gateway.auth.oauth.url` | Redirect users to this url to sign in.
 `gateway.auth.oauth.state` | Use this state code to authize access after user sign in. 
 
@@ -74,15 +74,15 @@ FORM Method:
 
 Property | Description
 ---------|------------
-`gateway.auth.form` | True
-`gateway.auth.form.input.fields` | List of `gateway.auth.credential.input.fields` for authorizing access.
+`gateway.auth.method` | `form`
+`gateway.auth.form` | List of `gateway.auth.form.input.field` for authorizing access.
 
-*gateway.auth.credential.input.fields*
+*gateway.auth.form.input.field*
 
 Property | Description
 ---------|------------
+`gateway.auth.form.input.field.prompt` | Question or instrution for user.
 `gateway.auth.form.input.field.name` | Authorization parameter name.
-`gateway.auth.form.input.field.instruction` | Optional user instruction for inputing the parameter value.
 `gateway.auth.form.input.field.required` | True if required for authorization.
 `gateway.auth.form.input.field.order` | The sort order for displaying the input field in a form.
 
