@@ -58,7 +58,7 @@ GET /v2/gateway_auth_method
 
 There are two sign-in methods. The gateway responds with the keys for the supported method.
 
-OAUTH Method:
+OAUTH Sign-In Method:
 
 *JSON*
 
@@ -68,7 +68,7 @@ Property | Description
 `gateway.auth.oauth.url` | Redirect users to this url to sign in.
 `gateway.auth.oauth.state` | Use this state code to authize access after user sign in. 
 
-FORM Method:
+FORM Sign-In Method:
 
 *JSON*
 
