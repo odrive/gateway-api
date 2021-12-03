@@ -16,7 +16,8 @@ A Storage Gateway's file system is navigable. Upon authorization, the gateway re
 
 Use Case | Endpoint
 ---------|------------
-Sign in | `POST /v2/gateway_auth`
+Determine the sign-in method | `GET /v2/gateway_auth_method`
+Sign in with supported method | `POST /v2/gateway_auth`
 Sign out | `DELETE /v2/gateway_auth/<gateway.auth.access.token>`
 Refresh expired access token | `POST /v2/gateway_auth`
 
@@ -48,7 +49,56 @@ Delete files or folders | `DELETE /v2/gateway_metadata/<gateway.metadata.id>`
 
 # gateway.auth
 
-## Sign in
+## Discover available sign-in methods
+```
+GET /v2/gateway_auth_method
+```
+
+**RESPONSE**
+
+There are two sign-in methods. The gateway responds with the keys for the supported method.
+
+OAUTH Sign-In Method:
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.auth.method` | `oauth`
+`gateway.auth.oauth.url` | Redirect users to this url to sign in.
+`gateway.auth.oauth.state` | Use this state code to authize access after user sign in. 
+
+FORM Sign-In Method:
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.auth.method` | `form`
+`gateway.auth.form` | List of `gateway.auth.form.input.field` for authorizing access.
+
+*gateway.auth.form.input.field*
+
+Property | Description
+---------|------------
+`gateway.auth.form.input.field.prompt` | Question or instrution for user.
+`gateway.auth.form.input.field.name` | Authorization parameter name.
+`gateway.auth.form.input.field.required` | True if required for authorization.
+`gateway.auth.form.input.field.order` | The sort order for displaying the input fields in a form.
+
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`400` | Missing credential
+`403` | Invalid credential
+`403` | Not allowed
+`429` | Rate limited
+
+
+## Sign in with OAUTH method
 ```
 POST /v2/gateway_auth
 ```
@@ -57,7 +107,41 @@ POST /v2/gateway_auth
 
 *JSON*
 
-Sign-in requirements are specific to implementation. Please refer to provider documentation.
+Property | Description
+---------|------------
+`gateway.auth.oauth.state` | The state code provided from the method specification.
+
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
+`gateway.auth.refresh.token` | Required to refresh expired access tokens.
+`gateway.auth.metadata.content.id` | The root folder. 
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`400` | Missing oauth state
+`403` | Not authorized
+`429` | Rate limited
+
+
+## Sign in with FORM method
+```
+POST /v2/gateway_auth
+```
+
+**REQUEST**
+
+*JSON*
+
+Submit the user response to the required form input fields. Format the request as a JSON post with the field name as the key and user input as the value.
 
 **RESPONSE**
 
@@ -76,7 +160,6 @@ Status | Description
 `200` | OK
 `400` | Missing credential
 `403` | Invalid credential
-`403` | Not allowed
 `429` | Rate limited
 
 ## Sign out
