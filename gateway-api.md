@@ -16,7 +16,7 @@ A Storage Gateway's file system is navigable. Upon authorization, the gateway re
 
 Use Case | Endpoint
 ---------|------------
-Determin the sign-in method | `GET /v2/gateway_auth_method`
+Determine the sign-in method | `GET /v2/gateway_auth_method`
 Sign in with supported method | `POST /v2/gateway_auth`
 Sign out | `DELETE /v2/gateway_auth/<gateway.auth.access.token>`
 Refresh expired access token | `POST /v2/gateway_auth`
@@ -141,8 +141,7 @@ POST /v2/gateway_auth
 
 *JSON*
 
-Submit the user reponse to the required form input fields. Format the request as JSON post with the field name as the key and user input as the value.
-
+Submit the user response to the required form input fields. Format the request as a JSON post with the field name as the key and user input as the value.
 
 **RESPONSE**
 
