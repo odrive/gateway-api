@@ -120,7 +120,8 @@ Property | Description
 ---------|------------
 `gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
 `gateway.auth.refresh.token` | Required to refresh expired access tokens.
-`gateway.auth.metadata.content.id` | The root folder. 
+`gateway.auth.metadata.id` | The root folder. 
+`gateway.auth.id` | ID of the user or account being authorized. 
 
 *Status*
 
@@ -151,7 +152,8 @@ Property | Description
 ---------|------------
 `gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
 `gateway.auth.refresh.token` | Required to refresh expired access tokens.
-`gateway.auth.metadata.content.id` | The root folder. 
+`gateway.auth.metadata.id` | The root folder. 
+`gateway.auth.id` | ID of the user or account being authorized. 
 
 *Status*
 
