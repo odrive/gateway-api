@@ -95,7 +95,6 @@ Status | Description
 `400` | Missing credential
 `403` | Invalid credential
 `403` | Not allowed
-`429` | Rate limited
 
 
 ## Sign in with OAUTH method
@@ -130,7 +129,6 @@ Status | Description
 `200` | OK
 `400` | Missing oauth state
 `403` | Not authorized
-`429` | Rate limited
 
 
 ## Sign in with FORM method
@@ -162,7 +160,6 @@ Status | Description
 `200` | OK
 `400` | Missing credential
 `403` | Invalid credential
-`429` | Rate limited
 
 ## Sign out
 ```
@@ -185,7 +182,6 @@ Status | Description
 -------|------------
 `200` | OK
 `404` | gateway.auth.access.token not found
-`429` | Rate limited
 
 ## Refresh expired access token
 ```
@@ -216,7 +212,6 @@ Status | Description
 `200` | OK
 `400` | Missing gateway.auth.refresh.token
 `403` | Not allowed
-`429` | Rate limited
 
 # gateway.file
 
@@ -254,7 +249,6 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
-`429` | Rate limited
 
 ## Download thumbnail
 ```
@@ -290,7 +284,6 @@ Status | Description
 `403` | Not allowed
 `403` | Not available
 `404` | Not found
-`429` | Rate limited
 
 # gateway.metadata
 
@@ -340,7 +333,6 @@ Status | Description
 `400` | Missing folder name
 `401` | Authorization required
 `403` | Not allowed
-`429` | Rate limited
 
 ## Delete content
 ```
@@ -377,7 +369,6 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
-`429` | Rate limited
 
 ## Get content metadata
 ```
@@ -420,7 +411,6 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
-`429` | Rate limited
 
 ## List folder content metadata
 ```
@@ -473,7 +463,6 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
-`429` | Rate limited
 
 ## Move content
 ```
@@ -519,7 +508,6 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
-`429` | Rate limited
 
 ## Rename content
 ```
@@ -566,7 +554,6 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
-`429` | Rate limited
 
 
 ## Upload new file
@@ -623,7 +610,6 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
-`429` | Rate limited
 
 ## Update existing file
 ```
@@ -678,13 +664,16 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
-`429` | Rate limited
 
 # Error Handling
 
 Status | Description
 -------|------------
+`429` | Rate limited
 `500` | Unexpected exception
 `502` | Unexpected error from downstream service
 `503` | A downstream service is temporarily unavailable
 `504` | No response from downstream service
+
+The `Retry-After` response header may be included when code 429 or 503 is returned.
+This attribute provides the number of seconds the client should wait before making a follow-up request to the gateway.
