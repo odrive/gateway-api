@@ -29,41 +29,62 @@ gws>
 ```
 
 ## Connect Gateway
-Gateway Shell is a gateway client. Start by registering and authorizing access to the gateway. Use the `gateway` command to connect gateways. Gateway Shell can register multiple gateways. Each registered gateway is accessible by path: `/gateway/<gateway.name>`.
+Gateway Shell is a gateway client. Start by registering and authorizing access to the gateway. Use the `mounts` command to connect gateways. Gateway Shell can register multiple gateways. Each registered gateway is accessible by path: `/gateway/<gateway.name>`.
 
 *Example*
 
-Register a file server gateway at `http://localhost:8080` with `{"key": "default"}`. 
+Register a file server gateway at `http://localhost:8080` with key "123". 
 
 ```
-gws> gateway authorize devserver http://localhost:8080 '{"key": "default"}'
+gws> mounts add
 
-Success! Gateway authorized as devserver.
-gws> gateway list
-devserver
+What do you want to call the gateway?
+Name: devserver
 
+What is the gateway URL?
+URL: http://localhost:8080
+
+Please enter the access key.
+key: 123
+
+Success! Gateway authorized and mounted to /gateway/devserver.
 gws> 
 ```
 ## Commands
-Run Gateway Shell without commands to display the usage info.
+Run Gateway Shell `help` command to display the usage info.
 
 ```
-% gws.exe 
-Usage:
-    gws pwd
-    gws ls [(-l | --long)] [(-r | --refresh)] [<path>]
-    gws cd <path>
-    gws upload <source> <destination> [--recursive] [--merge | --overwrite | --skip]
-    gws download <source> <destination> [--recursive] [--merge | --overwrite | --skip]
-    gws copy <source> <destination> [--recursive] [--merge | --overwrite | --skip]
-    gws mv <source> <destination>
-    gws mkdir <path>
-    gws rm <path>
-    gws rename <path> <new-name>
-    gws stat <remote-path>
-    gws gateway [list]
-    gws gateway authorize <name> <url> <auth_json_string>
-    gws gateway deauthorize <name>
+% gws.exe help
+Gateway Shell.
 
+Usage:
+    gateway cd help
+    gateway copy help
+    gateway diagnostic help
+    gateway download help
+    gateway ls help
+    gateway mkdir help
+    gateway mounts help
+    gateway mv help
+    gateway pwd help
+    gateway rename help
+    gateway rm help
+    gateway stat help
+    gateway upload help
+
+Command:
+    cd          Change the current working directory.
+    copy        Copy files and folders between storage.
+    diagnostic  Get storage diagnostics.
+    download    Download files and folders.
+    ls          Print the directory content.
+    mkdir       Make new folders.
+    mounts      Manage access to storage.
+    mv          Move to another directory.
+    pwd         Print the current working directory.
+    rename      Change the file or folder name.
+    rm          Delete the file or folder.
+    stat        Print the gateway metadata.
+    upload      Upload files and folders
 % 
 ```
