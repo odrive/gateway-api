@@ -1,10 +1,10 @@
 # Storage Gateway
-odrive integrates with applications through Storage Gateways.
+Odrive integrates with applications through Storage Gateways.
 
-A Storage Gateway is simply a web server implementing the [Gateway API](https://github.com/odrive/gateway-api/blob/main/gateway-api.md) used by odrive to access and synchronize files.
+A Storage Gateway is simply a web server implementing the [Gateway API](https://github.com/odrive/gateway-api/blob/main/gateway-api.md) used by Odrive to access and synchronize files.
 
 # Integrating with odrive
-Integrate with odrive by making and publishing a Storage Gateway to your storage or application.
+Integrate with Odrive by making and publishing a Storage Gateway to your storage or application.
 
 ## Designing your Gateway
 A Storage Gateway provides a file system view of application data. Each gateway user can have different folder hierarchies and files.
@@ -27,14 +27,14 @@ Please refer to the [Gateway API](https://github.com/odrive/gateway-api/blob/mai
 ## Testing your Gateway
 Use the following applications to access and exercise your gateway implementation:
 - [Gateway Shell](https://github.com/odrive/gateway-api/blob/main/gateway-shell.md) - Interactive command-line interface.
-- Gateway Sync - Desktop sync folder.
+- Odrive client - Desktop sync folder. Contact **support@odrive.com** for details.
 
 ## Publishing your Gateway
-Make the integration available to odrive. Several options are available:
+Make the integration available to Odrive. Several options are available:
 
-1. Publish the Storage Gateway privately and allow odrive users to connect with Gateway credentials.
-2. Submit your Storage Gateway to odrive to be included as an official source.
-3. Partner with odrive to integrate sync functionality into your product.
+1. Publish the Storage Gateway privately and allow Odrive users to connect with Gateway credentials.
+2. Submit your Storage Gateway to Odrive to be included as an official source.
+3. Partner with Odrive to integrate sync functionality into your product.
 
 # Reference Implementations
 

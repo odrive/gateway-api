@@ -1,9 +1,9 @@
 
 # Gateway API
-The Gateway API specifies how odrive authorizes users and accesses storage. A Storage Gateway implements the Gateway API endpoints by translating them to internal application calls and returning standardized responses. 
+The Gateway API specifies how Odrive authorizes users and accesses storage. A Storage Gateway implements the Gateway API endpoints by translating them to internal application calls and returning standardized responses. 
 
 ## Integration Model
-A Storage Gateway enables odrive access to its source system. It
+A Storage Gateway enables Odrive access to its source system. It
 maps its source data into a virtual, hierarchical file system represented as `gateway.file` and `gateway.metadata` resources. 
 
 A Storage Gateway's file system is navigable. Upon authorization, the gateway returns the session root folder as the starting point for browsing.
@@ -66,7 +66,7 @@ Property | Description
 ---------|------------
 `gateway.auth.method` | `oauth`
 `gateway.auth.oauth.url` | Redirect users to this url to sign in.
-`gateway.auth.oauth.state` | Use this state code to authize access after user sign in. 
+`gateway.auth.oauth.state` | Use this state code to authorize access after user sign in. 
 
 FORM Sign-In Method:
 
@@ -81,7 +81,7 @@ Property | Description
 
 Property | Description
 ---------|------------
-`gateway.auth.form.input.field.prompt` | Question or instrution for user.
+`gateway.auth.form.input.field.prompt` | Question or instruction for user.
 `gateway.auth.form.input.field.name` | Authorization parameter name.
 `gateway.auth.form.input.field.required` | True if required for authorization.
 `gateway.auth.form.input.field.order` | The sort order for displaying the input fields in a form.
