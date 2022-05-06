@@ -234,11 +234,18 @@ Property | Description
 ---------|-------------
 `AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
 
+**RESPONSE**
+
+*Header*
+
+Property | Description
+---------|-------------
+`Content-Length` | Number of bytes in the file stream
+`Transfer-Encoding` | Optional HTTP encoding format. If `chunked` is specified, then omit the Content-Length property.
+
 *Body*
 
-The file binary stream.
-
-**RESPONSE**
+The file binary stream. If `Transfer-Encoding` is specified, then return the encoded stream.
 
 *Status*
 
