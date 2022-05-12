@@ -240,7 +240,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`Content-Length` | Number of bytes in the file stream
+`Content-Length` | Optional number of bytes in the file stream. If provided, the provided stream must match the specified size.
 `Transfer-Encoding` | Optional HTTP encoding format. If `chunked` is specified, then omit the Content-Length property.
 
 *Body*
@@ -546,7 +546,7 @@ Property | Description
 
 *JSON*
 
-List of updated metadata properties, including but not limited to the following:
+Metadata object containing all the properties or just the updated properties, including but not limited to the following:
 
 Property | Description
 ---------|------------
