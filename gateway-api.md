@@ -449,7 +449,7 @@ Property | Description
 
 *JSON*
 
-List of metadata properties:
+List of objects with the following properties:
 
 Property | Description
 ---------|------------
@@ -500,7 +500,7 @@ Property | Description
 
 *JSON*
 
-List of updated metadata properties, including but not limited to the following:
+Updated properties, including but not limited to the following:
 
 Property | Description
 ---------|------------
@@ -546,7 +546,7 @@ Property | Description
 
 *JSON*
 
-Metadata object containing all the properties or just the updated properties, including but not limited to the following:
+Updated properties, including but not limited to the following:
 
 Property | Description
 ---------|------------
