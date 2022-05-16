@@ -590,6 +590,18 @@ Property | Description
 `gateway.metadata.name` | New file name
 `gateway.metadata.modified` | New file modified time (Millis since the epoch)
 `gateway.metadata.file.size` | New file size
+`sha256` | SHA-256 file hash (optional)
+`checkpoints` | Metadata for large file integrity checking (optional)
+
+*checkpoints*
+
+JSON list of objects specifying sections of the file. 
+Checkpoints help certain gateways upload the file in multiple segments.
+
+Property | Description
+---------|-------------
+`size` | Size of data segment
+`sha256` | SHA-256 hash of data segment
 
 *Body*
 
@@ -644,6 +656,18 @@ Property | Description
 ---------|-------------
 `gateway.metadata.modified` | Updated modified time (Millis since the epoch)
 `gateway.metadata.file.size` | Updated file size
+`sha256` | SHA-256 file hash (optional)
+`checkpoints` | Metadata for large file integrity checking (optional)
+
+*checkpoints*
+
+JSON list of objects specifying sections of the file. 
+Checkpoints help certain gateways upload the file in multiple segments.
+
+Property | Description
+---------|-------------
+`size` | Size of data segment
+`sha256` | SHA-256 hash of data segment
 
 *Body*
 
