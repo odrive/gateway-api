@@ -40,10 +40,23 @@ List folder content | `GET /v2/gateway_metadata_children/<gateway.metadata.id>?p
 Get file or folder properties | `GET /v2/gateway_metadata/<gateway.metadata.id>`
 Create folders | `POST /v2/gateway_metadata_folder/<gateway.metadata.id>`
 Upload files | `POST /v2/gateway_metadata_file/<gateway.metadata.id>`
+Upload large files | `POST /v2/gateway_metadata_upload/<gateway.metdata.id>`
 Update files | `PUT /v2/gateway_metadata_file/<gateway.metadata.id>`
+Update large files | `PUT /v2/gateway_metadata_upload/<gateway.metadata.id>`
 Move files or folders | `PUT /v2/gateway_metadata_parent/<gateway.metadata.id>`
 Rename files or folders | `PUT /v2/gateway_metadata_name/<gateway.metadata.id>`
 Delete files or folders | `DELETE /v2/gateway_metadata/<gateway.metadata.id>`
+
+**gateway.upload**
+
+`gateway.upload` represents a large file upload session.
+
+Use Case | Endpoint
+---------|------------
+Start large file uploads | `POST /v2/gateway_upload`
+Upload file segments | `POST /v2/gateway_upload_segment/<gateway.upload.id>`
+Cancel large file uploads | `DELETE /v2/gateway_upload/<gateway.upload.id>`
+
 
 # API Endpoints
 
