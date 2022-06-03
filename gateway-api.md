@@ -1,10 +1,10 @@
 
 # Gateway API
-The Gateway API specifies how Odrive authorizes users and accesses storage. A Storage Gateway implements the Gateway API endpoints by translating them to internal application calls and returning standardized responses. 
+The Gateway API specifies how Odrive authorizes users and accesses storage. A Storage Gateway implements the Gateway API endpoints by translating them to internal application calls and returning standardized responses.
 
 ## Integration Model
 A Storage Gateway enables Odrive access to its source system. It
-maps its source data into a virtual, hierarchical file system represented as `gateway.file` and `gateway.metadata` resources. 
+maps its source data into a virtual, hierarchical file system represented as `gateway.file` and `gateway.metadata` resources.
 
 A Storage Gateway's file system is navigable. Upon authorization, the gateway returns the session root folder as the starting point for browsing.
 
@@ -66,7 +66,7 @@ Property | Description
 ---------|------------
 `gateway.auth.method` | `oauth`
 `gateway.auth.oauth.url` | Redirect users to this url to sign in.
-`gateway.auth.oauth.state` | Use this state code to authorize access after user sign in. 
+`gateway.auth.oauth.state` | Use this state code to authorize access after user sign in.
 
 FORM Sign-In Method:
 
@@ -232,7 +232,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -274,7 +274,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -311,7 +311,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
@@ -358,7 +358,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
@@ -394,7 +394,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -408,7 +408,7 @@ Property | Description
 `gateway.metadata.name`| File or folder name
 `gateway.metadata.modified` | Millis since the epoch
 `gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same data
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
 
 *Status*
 
@@ -437,7 +437,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -459,7 +459,7 @@ Property | Description
 `gateway.metadata.name`| File or folder name
 `gateway.metadata.modified` | Millis since the epoch
 `gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same data
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
 
 *Status*
 
@@ -487,7 +487,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
@@ -533,7 +533,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
@@ -580,7 +580,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 `X-Gateway-Upload` | Special file upload JSON (see below).
 
 *X-Gateway-Upload*
@@ -619,7 +619,7 @@ Property | Description
 `gateway.metadata.name`| File name
 `gateway.metadata.modified` | Millis since the epoch
 `gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same bytes
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
 
 *Status*
 
@@ -647,7 +647,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 `X-Gateway-Upload` | Special file upload JSON (see below).
 
 *X-Gateway-Upload*
@@ -671,7 +671,7 @@ Property | Description
 
 *Body*
 
-The file binary stream.
+The binary file stream.
 
 **RESPONSE**
 
@@ -685,7 +685,7 @@ Property | Description
 `gateway.metadata.name`| File name
 `gateway.metadata.modified` | Millis since the epoch
 `gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same data
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
 
 *Status*
 
