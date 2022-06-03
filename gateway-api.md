@@ -408,7 +408,7 @@ Property | Description
 `gateway.metadata.name`| File or folder name
 `gateway.metadata.modified` | Millis since the epoch
 `gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same data
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
 
 *Status*
 
@@ -459,7 +459,7 @@ Property | Description
 `gateway.metadata.name`| File or folder name
 `gateway.metadata.modified` | Millis since the epoch
 `gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same data
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
 
 *Status*
 
@@ -619,7 +619,7 @@ Property | Description
 `gateway.metadata.name`| File name
 `gateway.metadata.modified` | Millis since the epoch
 `gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same bytes
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
 
 *Status*
 
@@ -685,7 +685,7 @@ Property | Description
 `gateway.metadata.name`| File name
 `gateway.metadata.modified` | Millis since the epoch
 `gateway.metadata.file.size`| Total bytes
-`gateway.metadata.file.hash` | Files with the same hash have the same data
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
 
 *Status*
 
