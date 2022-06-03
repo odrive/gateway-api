@@ -1,10 +1,10 @@
 
 # Gateway API
-The Gateway API specifies how Odrive authorizes users and accesses storage. A Storage Gateway implements the Gateway API endpoints by translating them to internal application calls and returning standardized responses. 
+The Gateway API specifies how Odrive authorizes users and accesses storage. A Storage Gateway implements the Gateway API endpoints by translating them to internal application calls and returning standardized responses.
 
 ## Integration Model
 A Storage Gateway enables Odrive access to its source system. It
-maps its source data into a virtual, hierarchical file system represented as `gateway.file` and `gateway.metadata` resources. 
+maps its source data into a virtual, hierarchical file system represented as `gateway.file` and `gateway.metadata` resources.
 
 A Storage Gateway's file system is navigable. Upon authorization, the gateway returns the session root folder as the starting point for browsing.
 
@@ -66,7 +66,7 @@ Property | Description
 ---------|------------
 `gateway.auth.method` | `oauth`
 `gateway.auth.oauth.url` | Redirect users to this url to sign in.
-`gateway.auth.oauth.state` | Use this state code to authorize access after user sign in. 
+`gateway.auth.oauth.state` | Use this state code to authorize access after user sign in.
 
 FORM Sign-In Method:
 
@@ -119,8 +119,8 @@ Property | Description
 ---------|------------
 `gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
 `gateway.auth.refresh.token` | Required to refresh expired access tokens.
-`gateway.auth.metadata.id` | The root folder. 
-`gateway.auth.id` | The ID of the user or account authorized. 
+`gateway.auth.metadata.id` | The root folder.
+`gateway.auth.id` | The ID of the user or account authorized.
 
 *Status*
 
@@ -150,8 +150,8 @@ Property | Description
 ---------|------------
 `gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
 `gateway.auth.refresh.token` | Required to refresh expired access tokens.
-`gateway.auth.metadata.id` | The root folder. 
-`gateway.auth.id` | The ID of the user or account authorized. 
+`gateway.auth.metadata.id` | The root folder.
+`gateway.auth.id` | The ID of the user or account authorized.
 
 *Status*
 
