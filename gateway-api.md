@@ -792,6 +792,55 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 
+## Upload file segments
+```
+POST /v2/gateway_upload_segment/<gateway.upload.id>
+```
+
+**REQUEST**
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+`X-GATEWAY-UPLOAD-SEGMENT` | The corresponding upload segment for upload.
+
+*X-GATEWAY-UPLOAD-SEGMENT*
+
+Property | Description
+---------|-------------
+`gateway.upload.segment.number` | Sequential segment number starting from 1
+`gateway.upload.segment.sha256` | Expected segment SHA-256
+`gateway.upload.segment.size` | Expected segment size
+`gateway.upload.segment.memo` | Opaque gateway information
+
+*Body*
+
+The binary segment stream.
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.upload.id` | Session ID
+`gateway.upload.segment.number` | Sequential segment number starting from 1
+`gateway.upload.segment.sha256` | Segment SHA-256
+`gateway.upload.segment.size` | Segment size
+`gateway.upload.segment.memo` | Opaque gateway information
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`400` | Invalid X-GATEWAY-UPLOAD-SEGMENT
+`401` | Authorization required
+`403` | Not allowed
+`404` | Gateway Upload Not found
+
 # Error Handling
 
 Status | Description
