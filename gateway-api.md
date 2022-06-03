@@ -664,7 +664,7 @@ Property | Description
 
 *Body*
 
-The file binary stream.
+The binary file stream.
 
 **RESPONSE**
 
@@ -680,11 +680,67 @@ Property | Description
 `gateway.metadata.file.size`| Total bytes
 `gateway.metadata.file.hash` | Files with the same hash are considered the same file
 
+
 *Status*
 
 Status | Description
 -------|------------
 `200` | OK
+`401` | Authorization required
+`403` | Not allowed
+
+
+# gateway.upload
+
+## Start large file uploads
+```
+POST /v2/gateway_upload
+```
+
+**REQUEST**
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+
+*JSON*
+
+Property | Description
+---------|-------------
+`gateway.metadata.id` | File to update or none if new file
+`gateway.metadata.parent.id` | Parent folder
+`gateway.metadata.name` | File name
+`gateway.metadata.file.size`| Total bytes
+`gateway.metadata.modified`| Millis since the epoch
+`gateway.upload.segment`| List of expected segments
+
+*gateway.upload.segment*
+
+Property | Description
+---------|-------------
+`gateway.upload.segment.number` | Sequential segment number starting from 1
+`gateway.upload.segment.sha256` | Expected segment SHA-256
+`gateway.upload.segment.size` | Expected segment size
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.upload.id` | Session ID
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`400` | Invalid gateway.metadata.id
+`400` | Invalid gateway.metadata.parent.id
+`400` | Missing gateway.metadata.file.size
+`400` | Missing gateway.metadata.modified
 `401` | Authorization required
 `403` | Not allowed
 
