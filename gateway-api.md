@@ -592,6 +592,7 @@ Property | Description
 `gateway.metadata.name` | New file name
 `gateway.metadata.modified` | New file modified time (Millis since the epoch)
 `gateway.metadata.file.size` | New file size
+`gateway.metadata.file.sha256` | Optional file SHA-256
 
 *Body*
 
@@ -700,6 +701,7 @@ Property | Description
 ---------|-------------
 `gateway.metadata.modified` | Updated modified time (Millis since the epoch)
 `gateway.metadata.file.size` | Updated file size
+`gateway.metadata.file.sha256` | Optional file SHA-256
 
 *Body*
 
