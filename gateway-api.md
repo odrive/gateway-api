@@ -634,7 +634,6 @@ Status | Description
 `403` | Not allowed
 `404` | Not found
 
-## Update existing file
 ## Upload large file
 ```
 POST /v2/gateway_metadata_upload/<gateway.metadata.id>
@@ -720,6 +719,58 @@ Property | Description
 *Body*
 
 The binary file stream.
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.metadata.id` | File
+`gateway.metadata.parent.id` | Parent folder ID
+`gateway.metadata.type`| `file`
+`gateway.metadata.name`| File name
+`gateway.metadata.modified` | Millis since the epoch
+`gateway.metadata.file.size`| Total bytes
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`401` | Authorization required
+`403` | Not allowed
+`404` | Not found
+
+## Update large file
+```
+PUT /v2/gateway_metadata_upload/<gateway.metadata.id>
+```
+
+**REQUEST**
+
+*URL*
+
+Property | Description
+---------|-------------
+`gateway.metadata.id` | File to update
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+
+*Body*
+
+Property | Description
+---------|-------------
+`gateway.metadata.modified` | Updated modified time (Millis since the epoch)
+`gateway.metadata.file.size` | Updated file size
+`gateway.metadata.file.sha256` | Optional file SHA-256
+`gateway.upload.id` | File upload session ID
+`gateway.upload.segment` | List of updated upload segments
 
 **RESPONSE**
 
