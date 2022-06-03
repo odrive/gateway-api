@@ -687,12 +687,61 @@ Status | Description
 `200` | OK
 `401` | Authorization required
 `403` | Not allowed
+
+## Upload file segments
+```
+POST /v2/gateway_upload_segment/<gateway.upload.id>
+```
+
+**REQUEST**
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+`X-GATEWAY-UPLOAD-SEGMENT` | Required segment info in JSON. See below.
+
+*X-GATEWAY-UPLOAD-SEGMENT*
+
+Property | Description
+---------|-------------
+`gateway.upload.segment.number` | Sequential segment number starting from 1
+`gateway.upload.segment.sha256` | Expected segment SHA-256
+`gateway.upload.segment.size` | Expected segment size
+
+
+*Body*
+
+The binary segment stream.
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.upload.id` | Session ID
+`gateway.upload.segment.number` | Sequential segment number starting from 1
+`gateway.upload.segment.sha256` | Segment SHA-256
+`gateway.upload.segment.size` | Segment size
+`gateway.upload.segment.result` | Opaque gateway result for finalizing upload.
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`400` | Invalid X-GATEWAY-UPLOAD-SEGMENT
+`401` | Authorization required
 `404` | Not found
+`403` | Not allowed
 
 # Error Handling
 
 Status | Description
 -------|------------
+`400` | Bad request
 `429` | Rate limited
 `500` | Unexpected exception
 `502` | Unexpected error from downstream service
