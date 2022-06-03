@@ -621,6 +621,7 @@ Status | Description
 `403` | Not allowed
 `404` | Not found
 
+## Update existing file
 ## Upload large file
 ```
 POST /v2/gateway_metadata_upload/<gateway.metadata.id>
