@@ -232,7 +232,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -274,7 +274,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -311,7 +311,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
@@ -358,7 +358,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
@@ -394,7 +394,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -437,7 +437,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 **RESPONSE**
 
@@ -487,7 +487,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
@@ -533,7 +533,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 
 *JSON*
 
@@ -580,7 +580,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 `X-Gateway-Upload` | Special file upload JSON (see below).
 
 *X-Gateway-Upload*
@@ -647,7 +647,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`AUTHORIZATION` | Requires access token formatted as: `Bearer <gateway.auth.access.token>`
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
 `X-Gateway-Upload` | Special file upload JSON (see below).
 
 *X-Gateway-Upload*
