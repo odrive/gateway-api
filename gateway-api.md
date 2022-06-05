@@ -661,7 +661,7 @@ Property | Description
 `gateway.metadata.modified` | New file modified time (Millis since the epoch)
 `gateway.metadata.file.size` | New file size
 `gateway.upload.id` | File upload session ID
-`gateway.upload.segment` | List of updated upload segments
+`gateway.upload.segment` | List of updated segments from uploading a segment
 
 **RESPONSE**
 
@@ -770,7 +770,7 @@ Property | Description
 `gateway.metadata.file.size` | Updated file size
 `gateway.metadata.file.sha256` | Optional file SHA-256
 `gateway.upload.id` | File upload session ID
-`gateway.upload.segment` | List of updated upload segments
+`gateway.upload.segment` | List of updated segments from uploading a segment
 
 **RESPONSE**
 
