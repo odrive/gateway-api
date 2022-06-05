@@ -845,7 +845,7 @@ Property | Description
 `gateway.upload.segment.number` | Sequential segment number starting from 1
 `gateway.upload.segment.sha256` | Expected segment SHA-256
 `gateway.upload.segment.size` | Expected segment size
-`gateway.upload.segment.memo` | Opaque gateway information
+`gateway.upload.segment.cookie` | Opaque gateway state required for uploading
 
 *Status*
 
@@ -880,7 +880,7 @@ Property | Description
 `gateway.upload.segment.number` | Sequential segment number starting from 1
 `gateway.upload.segment.sha256` | Expected segment SHA-256
 `gateway.upload.segment.size` | Expected segment size
-`gateway.upload.segment.memo` | Opaque gateway information
+`gateway.upload.segment.cookie` | Opaque gateway state required for uploading
 
 *Body*
 
@@ -896,7 +896,7 @@ Property | Description
 `gateway.upload.segment.number` | Sequential segment number starting from 1
 `gateway.upload.segment.sha256` | Segment SHA-256
 `gateway.upload.segment.size` | Segment size
-`gateway.upload.segment.memo` | Opaque gateway information
+`gateway.upload.segment.cookie` | Updated gateway state for finalizing uploads
 
 *Status*
 
