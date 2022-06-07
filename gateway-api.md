@@ -768,7 +768,6 @@ Property | Description
 ---------|-------------
 `gateway.metadata.modified` | Updated modified time (Millis since the epoch)
 `gateway.metadata.file.size` | Updated file size
-`gateway.metadata.file.sha256` | Optional file SHA-256
 `gateway.upload.id` | File upload session ID
 `gateway.upload.segment` | List of updated segments from uploading a segment
 
