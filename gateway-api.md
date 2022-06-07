@@ -908,6 +908,36 @@ Status | Description
 `403` | Not allowed
 `404` | Gateway Upload Not found
 
+## Cancel large file upload
+```
+DELETE /v2/gateway_upload/<gateway.upload.id>
+```
+
+**REQUEST**
+
+*URL*
+
+Property | Description
+---------|-------------
+`gateway.upload.id` | Upload session ID
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+
+**RESPONSE**
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`401` | Authorization required
+`403` | Not allowed
+`404` | Not found
+
 # Error Handling
 
 Status | Description
