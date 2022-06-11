@@ -40,10 +40,23 @@ List folder content | `GET /v2/gateway_metadata_children/<gateway.metadata.id>?p
 Get file or folder properties | `GET /v2/gateway_metadata/<gateway.metadata.id>`
 Create folders | `POST /v2/gateway_metadata_folder/<gateway.metadata.id>`
 Upload files | `POST /v2/gateway_metadata_file/<gateway.metadata.id>`
+Upload large files | `POST /v2/gateway_metadata_upload/<gateway.metdata.id>`
 Update files | `PUT /v2/gateway_metadata_file/<gateway.metadata.id>`
+Update large files | `PUT /v2/gateway_metadata_upload/<gateway.metadata.id>`
 Move files or folders | `PUT /v2/gateway_metadata_parent/<gateway.metadata.id>`
 Rename files or folders | `PUT /v2/gateway_metadata_name/<gateway.metadata.id>`
 Delete files or folders | `DELETE /v2/gateway_metadata/<gateway.metadata.id>`
+
+**gateway.upload**
+
+`gateway.upload` represents a large file upload session.
+
+Use Case | Endpoint
+---------|------------
+Start large file uploads | `POST /v2/gateway_upload`
+Upload file segments | `POST /v2/gateway_upload_segment/<gateway.upload.id>`
+Cancel large file uploads | `DELETE /v2/gateway_upload/<gateway.upload.id>`
+
 
 # API Endpoints
 
@@ -119,8 +132,9 @@ Property | Description
 ---------|------------
 `gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
 `gateway.auth.refresh.token` | Required to refresh expired access tokens.
-`gateway.auth.metadata.id` | The root folder. 
-`gateway.auth.id` | The ID of the user or account authorized. 
+`gateway.auth.metadata.id` | The root folder.
+`gateway.auth.id` | Authorizations with the same ID are for the same account.
+`gateway.upload.segment.size` | Files above the segment size should use segment upload.
 
 *Status*
 
@@ -150,8 +164,9 @@ Property | Description
 ---------|------------
 `gateway.auth.access.token` | Required AUTHORIZATION header for subsequent API requests.
 `gateway.auth.refresh.token` | Required to refresh expired access tokens.
-`gateway.auth.metadata.id` | The root folder. 
-`gateway.auth.id` | The ID of the user or account authorized. 
+`gateway.auth.metadata.id` | The root folder.
+`gateway.auth.id` | Authorizations with the same ID are for the same account.
+`gateway.upload.segment.size` | Files above the segment size should use segment upload.
 
 *Status*
 
@@ -590,22 +605,64 @@ Property | Description
 `gateway.metadata.name` | New file name
 `gateway.metadata.modified` | New file modified time (Millis since the epoch)
 `gateway.metadata.file.size` | New file size
-`sha256` | SHA-256 file hash (optional)
-`checkpoints` | Metadata for large file integrity checking (optional)
-
-*checkpoints*
-
-JSON list of objects specifying sections of the file. 
-Checkpoints help certain gateways upload the file in multiple segments.
-
-Property | Description
----------|-------------
-`size` | Size of data segment
-`sha256` | SHA-256 hash of data segment
+`gateway.metadata.file.sha256` | Optional file SHA-256
 
 *Body*
 
 The file binary stream.
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.metadata.id` | File ID
+`gateway.metadata.parent.id` | Parent folder ID
+`gateway.metadata.type`| `file`
+`gateway.metadata.name`| File name
+`gateway.metadata.modified` | Millis since the epoch
+`gateway.metadata.file.size`| Total bytes
+`gateway.metadata.file.hash` | Files with the same hash are the same file
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`401` | Authorization required
+`403` | Not allowed
+`404` | Not found
+
+## Upload large file
+```
+POST /v2/gateway_metadata_upload/<gateway.metadata.id>
+```
+
+**REQUEST**
+
+*URL*
+
+Property | Description
+---------|-------------
+`gateway.metadata.id` | Parent folder
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+
+*Body*
+
+Property | Description
+---------|-------------
+`gateway.metadata.name` | New file name
+`gateway.metadata.modified` | New file modified time (Millis since the epoch)
+`gateway.metadata.file.size` | New file size
+`gateway.metadata.file.sha256` | Optional file SHA-256
+`gateway.upload.id` | File upload session ID
+`gateway.upload.segment` | List of updated segments from uploading a segment
 
 **RESPONSE**
 
@@ -626,11 +683,13 @@ Property | Description
 Status | Description
 -------|------------
 `200` | OK
+`400` | Invalid gateway.upload.id
+`400` | Invalid gateway.upload.segment
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
 
-## Update existing file
+## Update file
 ```
 PUT /v2/gateway_metadata_file/<gateway.metadata.id>
 ```
@@ -656,18 +715,7 @@ Property | Description
 ---------|-------------
 `gateway.metadata.modified` | Updated modified time (Millis since the epoch)
 `gateway.metadata.file.size` | Updated file size
-`sha256` | SHA-256 file hash (optional)
-`checkpoints` | Metadata for large file integrity checking (optional)
-
-*checkpoints*
-
-JSON list of objects specifying sections of the file. 
-Checkpoints help certain gateways upload the file in multiple segments.
-
-Property | Description
----------|-------------
-`size` | Size of data segment
-`sha256` | SHA-256 hash of data segment
+`gateway.metadata.file.sha256` | Optional file SHA-256
 
 *Body*
 
@@ -686,6 +734,202 @@ Property | Description
 `gateway.metadata.modified` | Millis since the epoch
 `gateway.metadata.file.size`| Total bytes
 `gateway.metadata.file.hash` | Files with the same hash are considered the same file
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`401` | Authorization required
+`403` | Not allowed
+`404` | Not found
+
+## Update large file
+```
+PUT /v2/gateway_metadata_upload/<gateway.metadata.id>
+```
+
+**REQUEST**
+
+*URL*
+
+Property | Description
+---------|-------------
+`gateway.metadata.id` | File to update
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+
+*Body*
+
+Property | Description
+---------|-------------
+`gateway.metadata.modified` | Updated modified time (Millis since the epoch)
+`gateway.metadata.file.size` | Updated file size
+`gateway.metadata.file.sha256` | Optional file SHA-256
+`gateway.upload.id` | File upload session ID
+`gateway.upload.segment` | List of updated segments from uploading a segment
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.metadata.id` | File
+`gateway.metadata.parent.id` | Parent folder ID
+`gateway.metadata.type`| `file`
+`gateway.metadata.name`| File name
+`gateway.metadata.modified` | Millis since the epoch
+`gateway.metadata.file.size`| Total bytes
+`gateway.metadata.file.hash` | Files with the same hash are considered the same file
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`401` | Authorization required
+`403` | Not allowed
+`404` | Not found
+
+# gateway.upload
+
+## Start large file uploads
+```
+POST /v2/gateway_upload
+```
+
+**REQUEST**
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+
+*JSON*
+
+Property | Description
+---------|-------------
+`gateway.metadata.id` | File to update or none if new file
+`gateway.metadata.parent.id` | Parent folder
+`gateway.metadata.name` | File name
+`gateway.metadata.file.size`| Total bytes
+`gateway.metadata.modified`| Millis since the epoch
+`gateway.metadata.file.sha256` | Optional file SHA-256
+`gateway.upload.segment`| List of expected segments
+
+*gateway.upload.segment*
+
+Property | Description
+---------|-------------
+`gateway.upload.segment.number` | Sequential segment number starting from 1
+`gateway.upload.segment.sha256` | Expected segment SHA-256
+`gateway.upload.segment.size` | Expected segment size
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.upload.id` | Session ID
+`gateway.upload.segment` | List of updated upload segments.
+
+*gateway.upload.segment*
+
+Property | Description
+---------|-------------
+`gateway.upload.segment.number` | Sequential segment number starting from 1
+`gateway.upload.segment.sha256` | Expected segment SHA-256
+`gateway.upload.segment.size` | Expected segment size
+`gateway.upload.segment.cookie` | Opaque gateway state required for uploading
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`400` | Invalid gateway.metadata.id
+`400` | Invalid gateway.metadata.parent.id
+`400` | Missing gateway.metadata.file.size
+`400` | Missing gateway.metadata.modified
+`401` | Authorization required
+`403` | Not allowed
+
+## Upload file segments
+```
+POST /v2/gateway_upload_segment/<gateway.upload.id>
+```
+
+**REQUEST**
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+`X-GATEWAY-UPLOAD-SEGMENT` | The corresponding upload segment for upload.
+
+*X-GATEWAY-UPLOAD-SEGMENT*
+
+Property | Description
+---------|-------------
+`gateway.upload.segment.number` | Sequential segment number starting from 1
+`gateway.upload.segment.sha256` | Expected segment SHA-256
+`gateway.upload.segment.size` | Expected segment size
+`gateway.upload.segment.cookie` | Opaque gateway state required for uploading
+
+*Body*
+
+The binary segment stream.
+
+**RESPONSE**
+
+*JSON*
+
+Property | Description
+---------|------------
+`gateway.upload.id` | Session ID
+`gateway.upload.segment.number` | Sequential segment number starting from 1
+`gateway.upload.segment.sha256` | Segment SHA-256
+`gateway.upload.segment.size` | Segment size
+`gateway.upload.segment.cookie` | Updated gateway state for finalizing uploads
+
+*Status*
+
+Status | Description
+-------|------------
+`200` | OK
+`400` | Invalid X-GATEWAY-UPLOAD-SEGMENT
+`401` | Authorization required
+`403` | Not allowed
+`404` | Gateway Upload Not found
+
+## Cancel large file upload
+```
+DELETE /v2/gateway_upload/<gateway.upload.id>
+```
+
+**REQUEST**
+
+*URL*
+
+Property | Description
+---------|-------------
+`gateway.upload.id` | Upload session ID
+
+*Header*
+
+Property | Description
+---------|-------------
+`AUTHORIZATION` | Required access token formatted as: `Bearer <gateway.auth.access.token>`
+
+**RESPONSE**
 
 *Status*
 
