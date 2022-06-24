@@ -662,7 +662,8 @@ Property | Description
 `gateway.metadata.file.size` | New file size
 `gateway.metadata.file.sha256` | Optional file SHA-256
 `gateway.upload.id` | File upload session ID
-`gateway.upload.segment` | List of updated segments from uploading a segment
+`gateway.upload.segment` | List of updated segment state from uploading segments
+`gateway.upload.cookie` | Updated session state from uploading segments
 
 **RESPONSE**
 
@@ -771,7 +772,8 @@ Property | Description
 `gateway.metadata.file.size` | Updated file size
 `gateway.metadata.file.sha256` | Optional file SHA-256
 `gateway.upload.id` | File upload session ID
-`gateway.upload.segment` | List of updated segments from uploading a segment
+`gateway.upload.segment` | List of updated segment state from uploading segments
+`gateway.upload.cookie` | Updated session state from uploading segments
 
 **RESPONSE**
 
@@ -839,6 +841,7 @@ Property | Description
 ---------|------------
 `gateway.upload.id` | Session ID
 `gateway.upload.segment` | List of updated upload segments.
+`gateway.upload.cookie` | Opaque session state required for uploading
 
 *gateway.upload.segment*
 
@@ -847,7 +850,7 @@ Property | Description
 `gateway.upload.segment.number` | Sequential segment number starting from 1
 `gateway.upload.segment.sha256` | Expected segment SHA-256
 `gateway.upload.segment.size` | Expected segment size
-`gateway.upload.segment.cookie` | Opaque gateway state required for uploading
+`gateway.upload.segment.cookie` | Opaque segment state required for uploading
 
 *Status*
 
@@ -882,7 +885,8 @@ Property | Description
 `gateway.upload.segment.number` | Sequential segment number starting from 1
 `gateway.upload.segment.sha256` | Expected segment SHA-256
 `gateway.upload.segment.size` | Expected segment size
-`gateway.upload.segment.cookie` | Opaque gateway state required for uploading
+`gateway.upload.segment.cookie` | Opaque segment state required for uploading
+`gateway.upload.cookie` | Opaque session state required for uploading
 
 *Body*
 
@@ -898,7 +902,8 @@ Property | Description
 `gateway.upload.segment.number` | Sequential segment number starting from 1
 `gateway.upload.segment.sha256` | Segment SHA-256
 `gateway.upload.segment.size` | Segment size
-`gateway.upload.segment.cookie` | Updated gateway state for finalizing uploads
+`gateway.upload.segment.cookie` | Updated segment state for finalizing uploads
+`gateway.upload.cookie` | Updated upload session state required for uploading
 
 *Status*
 
