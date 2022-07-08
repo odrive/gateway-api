@@ -602,7 +602,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`gateway.metadata.name` | New file name, with non-ASCII characters converted to Unicode escape-sequences \uXXXX
+`gateway.metadata.name` | New file name, encoded using percent-encoding format.
 `gateway.metadata.modified` | New file modified time (Millis since the epoch)
 `gateway.metadata.file.size` | New file size
 `gateway.metadata.file.sha256` | Optional file SHA-256
