@@ -272,6 +272,11 @@ Status | Description
 `403` | Not allowed
 `404` | Not found
 
+The `Retry-After` response header may be included when code 403 is returned.
+This attribute provides the number of seconds the client should wait before trying to download the file again.
+The value should be at least 600 seconds.
+A value of 0 means that the client should not try to download the file again.
+
 ## Download thumbnail
 ```
 GET /v2/gateway_file_thumbnail/<gateway.metadata.id>
@@ -634,6 +639,11 @@ Status | Description
 `403` | Not allowed
 `404` | Not found
 
+The `Retry-After` response header may be included when code 403 is returned.
+This attribute provides the number of seconds the client should wait before trying to upload the file again.
+The value should be at least 600 seconds.
+A value of 0 means that the client should not try to upload the file again.
+
 ## Upload large file
 ```
 POST /v2/gateway_metadata_upload/<gateway.metadata.id>
@@ -744,6 +754,11 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
+
+The `Retry-After` response header may be included when code 403 is returned.
+This attribute provides the number of seconds the client should wait before trying to upload the file again.
+The value should be at least 600 seconds.
+A value of 0 means that the client should not try to upload the file again.
 
 ## Update large file
 ```
@@ -863,6 +878,11 @@ Status | Description
 `400` | Missing gateway.metadata.modified
 `401` | Authorization required
 `403` | Not allowed
+
+The `Retry-After` response header may be included when code 403 is returned.
+This attribute provides the number of seconds the client should wait before trying to start the upload again.
+The value should be at least 600 seconds.
+A value of 0 means that the client should not try to upload the file again.
 
 ## Upload file segments
 ```
