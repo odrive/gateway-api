@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <label for="fname">Gateway URL:</label>
+    <input type="text" id="gwUrl" name="gwUrl"><br><br>
+    
+    <label for="fname">Gateway name:</label>
+    <input type="text" id="gwName" name="gwName"><br><br>
+
+    <label for="cars">Choose a storage:</label>
+    <select name="gwStorage" id="gwStorage">
+    <option value="onedrive">OneDrive</option>
+    <option value="google_drive">Google Drive</option>
+    <option value="procore">Procore</option>
+    </select>
+    
+    <button onclick="authorizeGateway()">Authorize</button><br><br>
+    <label id="lblError" style="color: red;"></label>
+    <label id="lblMsg" style="color:fuchsia"></label><br><br>
+
+    <button onclick="listRoot()" id="btnRefresh" hidden>List content</button><br><br>
+
+    <script src="index.js"></script>
+</body>
+</html>
