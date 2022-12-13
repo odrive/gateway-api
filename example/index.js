@@ -2,7 +2,6 @@
 let auth_method = null
 let gateway_auth = null
 let storage = null
-let gatewayName = null
 let gatewayUrl = null
 
 
@@ -13,11 +12,10 @@ async function authorizeGateway() {
 
     // Get values.
     gatewayUrl = document.querySelector("#gwUrl").value
-    gatewayName = document.querySelector("#gwName").value
     storage = document.querySelector("#gwStorage").value
 
     // Validate.
-    if (!gatewayUrl || !gatewayName || !storage) {
+    if (!gatewayUrl || !storage) {
         document.querySelector("#lblError").textContent = "URL, Name and storage are required."
         return
     }
