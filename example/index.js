@@ -1,8 +1,9 @@
 
-
-// Define gateway URL.
-const GATEWAY_URL = "https://gateway2-dev.odrive.com"
-document.querySelector("#gwUrl").value = GATEWAY_URL
+let auth_method = null
+let gateway_auth = null
+let storage = null
+let gatewayName = null
+let gatewayUrl = null
 
 
 async function authorizeGateway() {
@@ -11,9 +12,9 @@ async function authorizeGateway() {
     document.querySelector("#lblMsg").textContent = ""
 
     // Get values.
-    let gatewayUrl = document.querySelector("#gwUrl").value
-    let gatewayName = document.querySelector("#gwName").value
-    let storage = document.querySelector("#gwStorage").value
+    gatewayUrl = document.querySelector("#gwUrl").value
+    gatewayName = document.querySelector("#gwName").value
+    storage = document.querySelector("#gwStorage").value
 
     // Validate.
     if (!gatewayUrl || !gatewayName || !storage) {
@@ -33,19 +34,60 @@ async function authorizeGateway() {
         document.querySelector("#lblError").textContent = "Error connecting with gateway."
         return
     }
-
-    let auth = await response.json()
+    
+    // Save authorization data.
+    auth_method = await response.json()
+    console.log(auth_method)
 
     // Redirect to authorization url.
-    window.open(auth["gateway.auth.oauth.url"], '_blank')
-    document.querySelector("#lblMsg").textContent = `After authorizing access, press "List content" button to view the storage content.`
+    window.open(auth_method["gateway.auth.oauth.url"], '_blank')
+    document.querySelector("#lblMsg").textContent = `After authorizing access, press "Refresh".`
     document.getElementById("btnRefresh").hidden = false
-
-
-
 }
 
 
-function listRoot() {
+async function validateAuth() {
+
+    // e.g: POST /gateway/onedrive/v2/gateway_auth
+    let uri = `/gateway/${storage}/v2/gateway_auth`
+
+    let response = await fetch(gatewayUrl + uri, {
+        method: 'POST',
+        body: JSON.stringify({"gateway.auth.oauth.state": auth_method["gateway.auth.oauth.state"]})
+    })
+
+    if (!response.ok) {
+        document.querySelector("#lblMsg").textContent = ""
+        document.querySelector("#lblError").textContent = "Storage not authorized."
+        return
+    }
+
+    gateway_auth = await response.json()
+    console.log(gateway_auth)
+
+    document.querySelector("#lblMsg").textContent = "Successfully connected to the gateway."
+    document.getElementById("btnRefresh").hidden = true
+    document.getElementById("btnList").hidden = false
+}
+
+
+async function listRoot() {
+
+    // e.g: GET /gateway/onedrive/v2/gateway_metadata_children/odroot
+    let uri = `/gateway/${storage}/v2/gateway_metadata_children/${gateway_auth["gateway.auth.metadata.id"]}`
+
+    let response = await fetch("https://cors-anywhere.herokuapp.com/" + gatewayUrl + uri,{
+        headers: {
+            'AUTHORIZATION': `Bearer ${gateway_auth["gateway.auth.access.token"]}`
+        },
+    })
+    if (!response.ok) {
+        document.querySelector("#lblMsg").textContent = ""
+        document.querySelector("#lblError").textContent = "Error listing storage metadata."
+        return
+    }
+    let data = await response.json()
+    console.log(data)
+    document.querySelector("#divData").append(JSON.stringify(data))
 
 }
