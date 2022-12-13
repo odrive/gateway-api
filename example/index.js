@@ -76,6 +76,8 @@ async function listRoot() {
     // e.g: GET /gateway/onedrive/v2/gateway_metadata_children/odroot
     let uri = `/gateway/${storage}/v2/gateway_metadata_children/${gateway_auth["gateway.auth.metadata.id"]}`
 
+
+    // For this DEMO, we are using a workaround with "https://cors-anywhere.herokuapp.com/" to avoid CORS issues.
     let response = await fetch("https://cors-anywhere.herokuapp.com/" + gatewayUrl + uri,{
         headers: {
             'AUTHORIZATION': `Bearer ${gateway_auth["gateway.auth.access.token"]}`
