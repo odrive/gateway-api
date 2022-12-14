@@ -4,7 +4,7 @@ import waitForUserInput from 'wait-for-user-input';
 
 
 // Required inputs to run script.
-const storage = "onedrive"; // options: "onedrive", "google_drive", "procore", ...
+const storage = "onedrive"; // options: "onedrive", "google_drive", "procore", "amazon_s3"...
 const gatewayURL = ""; // e.g: https://gateway-url-odrive.com
 
 
@@ -13,13 +13,34 @@ const gatewayURL = ""; // e.g: https://gateway-url-odrive.com
 
 async function main() {
 
-    // Get storage gateway's access using OAUTH Sign-In Method.
+    let auth_body = {}
+
+    // Get storage gateway's access method.
     const auth_method = await signIn()
     console.info(auth_method)
-    await waitForUserInput('After authorizing access, press enter.')
+
+    // Oauth Method.
+    if (auth_method["gateway.auth.method"] === "oauth") {
+
+        // Save body to then authorize.
+        auth_body["gateway.auth.oauth.state"] = auth_method["gateway.auth.oauth.state"]
+
+        // Open browser to sign-in into selected storage.
+        open(auth_method["gateway.auth.oauth.url"])
+        await waitForUserInput('After authorizing access, press enter.')
+    }
+
+    // Form based method.
+    if (auth_method["gateway.auth.method"] === "form") {
+        
+        // Ask to user for inputs and save them as body to then authorize.
+        for (let question of auth_method["gateway.auth.form"]) {
+            auth_body[question["gateway.auth.form.input.field.name"]] = await waitForUserInput(`${question["gateway.auth.form.input.field.prompt"]}: `)
+        }
+    }
 
     // Validate if the gateway signed-in correctly into the storage selected.
-    const gateway_auth = await authorize(auth_method)
+    const gateway_auth = await authorize(auth_body)
     console.info(gateway_auth)
 
     // Get the metadata for the root content.
@@ -41,23 +62,24 @@ async function signIn() {
     }
     let data = await response.json()
 
-    // Open browser to sign-in into storage selected.
-    open(data["gateway.auth.oauth.url"])
+
     
     return data
 }
 
 
-async function authorize(auth_method) {
+async function authorize(body) {
     console.debug(`Authorize gateway => ${storage}`)
+    console.debug(`Body => ${JSON.stringify(body)}`)
 
     // e.g: POST /gateway/onedrive/v2/gateway_auth
     let uri = `/gateway/${storage}/v2/gateway_auth`
     let response = await fetch(gatewayURL + uri, {
         method: 'POST',
-        body: JSON.stringify({"gateway.auth.oauth.state": auth_method["gateway.auth.oauth.state"]})
+        body: JSON.stringify(body)
     })
     if (!response.ok) {
+        console.error(response)
         console.error("Storage not authorized.")
         return
     }
