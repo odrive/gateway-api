@@ -30,7 +30,7 @@ async function main() {
 
 
 async function signIn() {
-    console.debug(`Authorizing gateway => ${storage}`)
+    console.debug(`Sign In => ${storage}`)
 
     // e.g: GET /gateway/onedrive/v2/gateway_auth_method (OAUTH Sign-In Method.)
     let uri = `/gateway/${storage}/v2/gateway_auth_method`
@@ -49,7 +49,7 @@ async function signIn() {
 
 
 async function authorize(auth_method) {
-    console.debug(`Validating gateway => ${storage}`)
+    console.debug(`Authorize gateway => ${storage}`)
 
     // e.g: POST /gateway/onedrive/v2/gateway_auth
     let uri = `/gateway/${storage}/v2/gateway_auth`
