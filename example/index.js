@@ -5,7 +5,7 @@ import waitForUserInput from 'wait-for-user-input';
 
 // Required inputs to run script.
 const storage = "onedrive"; // options: "onedrive", "google_drive", "procore", ...
-const gatewayURL = "https://gateway2-dev.odrive.com"; // e.g: https://gateway-url-odrive.com
+const gatewayURL = ""; // e.g: https://gateway-url-odrive.com
 
 
 (async() => { await main() })()
