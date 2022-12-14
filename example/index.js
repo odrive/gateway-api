@@ -3,7 +3,7 @@ import open from 'open';
 import waitForUserInput from 'wait-for-user-input';
 
 
-const storage = "onedrive" // options: ["onedrive", "google_drive", "procore", ...]
+const storage = "onedrive"; // options: ["onedrive", "google_drive", "procore", ...]
 const gatewayURL = "https://gateway2-dev.odrive.com";
 
 
