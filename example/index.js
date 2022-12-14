@@ -5,7 +5,7 @@ import waitForUserInput from 'wait-for-user-input';
 
 // Required inputs to run script.
 const storage = "onedrive"; // options: "onedrive", "google_drive", "procore", ...
-const gatewayURL = ""; // e.g: https://gateway-url-odrive.com
+const gatewayURL = "https://gateway2-dev.odrive.com"; // e.g: https://gateway-url-odrive.com
 
 
 (async() => { await main() })()
@@ -13,13 +13,13 @@ const gatewayURL = ""; // e.g: https://gateway-url-odrive.com
 
 async function main() {
 
-    // Storage gateway's access authorization.
-    const auth_method = await authorizeGateway() 
+    // Get storage gateway's access using OAUTH Sign-In Method.
+    const auth_method = await signIn()
     console.info(auth_method)
     await waitForUserInput('After authorizing access, press enter.')
 
     // Validate if the gateway signed-in correctly into the storage selected.
-    const gateway_auth = await validateAuth(auth_method)
+    const gateway_auth = await authorize(auth_method)
     console.info(gateway_auth)
 
     // Get the metadata for the root content.
@@ -29,10 +29,10 @@ async function main() {
 }
 
 
-async function authorizeGateway() {
+async function signIn() {
     console.debug(`Authorizing gateway => ${storage}`)
 
-    // e.g: GET /gateway/onedrive/v2/gateway_auth_method
+    // e.g: GET /gateway/onedrive/v2/gateway_auth_method (OAUTH Sign-In Method.)
     let uri = `/gateway/${storage}/v2/gateway_auth_method`
     let response = await fetch(gatewayURL + uri)
     if (!response.ok) {
@@ -48,7 +48,7 @@ async function authorizeGateway() {
 }
 
 
-async function validateAuth(auth_method) {
+async function authorize(auth_method) {
     console.debug(`Validating gateway => ${storage}`)
 
     // e.g: POST /gateway/onedrive/v2/gateway_auth
