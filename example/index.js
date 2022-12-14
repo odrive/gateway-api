@@ -75,7 +75,8 @@ async function listRoot() {
     let uri = `/gateway/${storage}/v2/gateway_metadata_children/${gateway_auth["gateway.auth.metadata.id"]}`
 
 
-    // For this DEMO, we are using a workaround with "https://cors-anywhere.herokuapp.com/" to avoid CORS issues.
+    // For this DEMO, we are using a proxy "https://cors-anywhere.herokuapp.com/" to avoid CORS issues.
+    // https://cors-anywhere.herokuapp.com/corsdemo - Request access to demo.
     let response = await fetch("https://cors-anywhere.herokuapp.com/" + gatewayUrl + uri,{
         headers: {
             'AUTHORIZATION': `Bearer ${gateway_auth["gateway.auth.access.token"]}`
