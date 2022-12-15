@@ -4,8 +4,8 @@ import waitForUserInput from 'wait-for-user-input';
 
 
 // Required inputs to run script.
-const storage = "onedrive"; // options: "onedrive", "google_drive", "procore", "amazon_s3"...
-const gatewayURL = ""; // e.g: https://gateway-url-odrive.com
+const storage = await waitForUserInput('Enter the storage name(e.g: onedrive, google_drive, amazon_s3): '); // options: "onedrive", "google_drive", "procore", "amazon_s3"...
+const gatewayURL = "https://gateway2-dev.odrive.com"; // e.g: https://gateway-url-odrive.com
 
 
 (async() => { await main() })()
@@ -17,7 +17,7 @@ async function main() {
 
     // Get storage gateway's access method.
     const auth_method = await signIn()
-    console.info(auth_method)
+    console.info("Sign-in response: ", auth_method)
 
     // Oauth Method.
     if (auth_method["gateway.auth.method"] === "oauth") {
@@ -41,12 +41,16 @@ async function main() {
 
     // Validate if the gateway signed-in correctly into the storage selected.
     const gateway_auth = await authorize(auth_body)
-    console.info(gateway_auth)
+    console.info("Authorization response: ", gateway_auth)
+
+    if (!gateway_auth) {
+        console.error("Storage gateway not authenticated.")
+        return
+    }
 
     // Get the metadata for the root content.
     const rootContent = await listContent(gateway_auth)
-    console.info(rootContent)
-    
+    console.info("Content response: ", rootContent)    
 }
 
 
@@ -70,7 +74,6 @@ async function signIn() {
 
 async function authorize(body) {
     console.debug(`Authorize gateway => ${storage}`)
-    console.debug(`Body => ${JSON.stringify(body)}`)
 
     // e.g: POST /gateway/onedrive/v2/gateway_auth
     let uri = `/gateway/${storage}/v2/gateway_auth`
@@ -79,7 +82,6 @@ async function authorize(body) {
         body: JSON.stringify(body)
     })
     if (!response.ok) {
-        console.error(response)
         console.error("Storage not authorized.")
         return
     }
