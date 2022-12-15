@@ -5,7 +5,7 @@ import waitForUserInput from 'wait-for-user-input';
 
 // Required inputs to run script.
 const storage = await waitForUserInput('Enter the storage name(e.g: onedrive, google_drive, amazon_s3): '); // options: "onedrive", "google_drive", "procore", "amazon_s3"...
-const gatewayURL = "https://gateway2-dev.odrive.com"; // e.g: https://gateway-url-odrive.com
+const gatewayURL = ""; // e.g: https://gateway-url-odrive.com
 
 
 (async() => { await main() })()
@@ -57,18 +57,15 @@ async function main() {
 async function signIn() {
     console.debug(`Sign In => ${storage}`)
 
-    // e.g: GET /gateway/onedrive/v2/gateway_auth_method (OAUTH Sign-In Method.)
+    // e.g: GET /gateway/onedrive/v2/gateway_auth_method
     let uri = `/gateway/${storage}/v2/gateway_auth_method`
     let response = await fetch(gatewayURL + uri)
     if (!response.ok) {
         console.error("Error connecting with gateway.")
         return
     }
-    let data = await response.json()
 
-
-    
-    return data
+    return await response.json()
 }
 
 
