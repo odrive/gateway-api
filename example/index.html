@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div style="width: 50%; float:left">
+        <h2>Configuration</h2><br>
+        <label for="fname">Gateway URL:</label>
+        <input type="text" id="gwUrl" name="gwUrl" value="https://gateway2-dev2.odrive.com"><br><br>
+
+        <label for="cars">Choose a storage:</label>
+        <select name="gwStorage" id="gwStorage">
+            <option value="microsoft">Microsoft</option>
+            <option value="autodesk">Autodesk</option>
+            <option value="onedrive">OneDrive</option>
+            <option value="google_drive">Google Drive</option>
+            <option value="procore">Procore</option>
+        </select>
+
+        <button onclick="authorizeGateway()">Authorize</button><br><br>
+        <label id="lblError" style="color: red;"></label>
+        <label id="lblMsg" style="color:fuchsia"></label><br><br>
+
+        <button onclick="validateAuth()" id="btnRefresh" hidden>Refresh</button><br><br>
+
+        <button onclick="listRoot()" id="btnList" hidden>List root folder</button><br><br>
+
+        <pre id="divData"></pre>
+     </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

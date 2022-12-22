@@ -1,106 +1,97 @@
-import fetch from 'node-fetch';
-import open from 'open';
-import waitForUserInput from 'wait-for-user-input';
+let auth_method = null
+let gateway_auth = null
+let storage = null
+let gatewayUrl = null
 
 
-// Required inputs to run script.
-const storage = await waitForUserInput('Enter the storage name(e.g: microsoft, onedrive, google_drive, autodesk, amazon_s3): '); // options: "onedrive", "google_drive", "procore", "amazon_s3"...
-const gatewayURL = "https://gateway2-dev.odrive.com";
+async function authorizeGateway() {
+    // Reset message texts.
+    document.querySelector("#lblError").textContent = ""
+    document.querySelector("#lblMsg").textContent = ""
 
+    // Get values.
+    gatewayUrl = document.querySelector("#gwUrl").value
+    storage = document.querySelector("#gwStorage").value
 
-(async() => { await main() })()
-
-
-async function main() {
-
-    let auth_body = {}
-
-    // Get storage gateway's access method.
-    const auth_method = await signIn()
-    console.info("Sign-in response: ", auth_method)
-
-    // Oauth Method.
-    if (auth_method["gateway.auth.method"] === "oauth") {
-
-        // Save body to then authorize.
-        auth_body["gateway.auth.oauth.state"] = auth_method["gateway.auth.oauth.state"]
-
-        // Open browser to sign-in into selected storage.
-        open(auth_method["gateway.auth.oauth.url"])
-        await waitForUserInput('After authorizing access, press enter.')
-    }
-
-    // Form based method.
-    if (auth_method["gateway.auth.method"] === "form") {
-        
-        // Ask to user for inputs and save them as body to then authorize.
-        for (let question of auth_method["gateway.auth.form"]) {
-            auth_body[question["gateway.auth.form.input.field.name"]] = await waitForUserInput(`${question["gateway.auth.form.input.field.prompt"]}: `)
-        }
-    }
-
-    // Validate if the gateway signed-in correctly into the storage selected.
-    const gateway_auth = await authorize(auth_body)
-    console.info("Authorization response: ", gateway_auth)
-
-    if (!gateway_auth) {
-        console.error("Storage gateway not authenticated.")
+    // Validate.
+    if (!gatewayUrl || !storage) {
+        document.querySelector("#lblError").textContent = "URL, Name and storage are required."
         return
     }
 
-    // Get the metadata for the root content.
-    const rootContent = await listContent(gateway_auth)
-    console.info("Content response: ", rootContent)    
-}
-
-
-async function signIn() {
-    console.debug(`Sign In => ${storage}`)
+    // Authorize gateway.
+    document.querySelector("#lblMsg").textContent = "Connecting..."
 
     // e.g: GET /gateway/onedrive/v2/gateway_auth_method
     let uri = `/gateway/${storage}/v2/gateway_auth_method`
-    let response = await fetch(gatewayURL + uri)
+
+    let response = await fetch(gatewayUrl + uri)
     if (!response.ok) {
-        console.error("Error connecting with gateway.")
+        document.querySelector("#lblMsg").textContent = ""
+        document.querySelector("#lblError").textContent = "Error connecting with gateway."
         return
     }
 
-    return await response.json()
+    // Save authorization data.
+    auth_method = await response.json()
+    console.log(auth_method)
+
+    // Redirect to authorization url.
+    window.open(auth_method["gateway.auth.oauth.url"], '_blank')
+    document.querySelector("#lblMsg").textContent = `After authorizing access, press "Refresh".`
+    document.getElementById("btnRefresh").hidden = false
 }
 
 
-async function authorize(body) {
-    console.debug(`Authorize gateway => ${storage}`)
+async function validateAuth() {
 
     // e.g: POST /gateway/onedrive/v2/gateway_auth
     let uri = `/gateway/${storage}/v2/gateway_auth`
-    let response = await fetch(gatewayURL + uri, {
+
+    let response = await fetch(gatewayUrl + uri, {
         method: 'POST',
-        body: JSON.stringify(body)
+        body: JSON.stringify({"gateway.auth.oauth.state": auth_method["gateway.auth.oauth.state"]})
     })
+
     if (!response.ok) {
-        console.error("Storage not authorized.")
+        document.querySelector("#lblMsg").textContent = ""
+        document.querySelector("#lblError").textContent = "Storage not authorized."
         return
     }
 
-    return await response.json()
+    gateway_auth = await response.json()
+    console.log(gateway_auth)
+
+    document.querySelector("#lblMsg").textContent = "Successfully connected to the gateway."
+    document.getElementById("btnRefresh").hidden = true
+    document.getElementById("btnList").hidden = false
 }
 
 
-async function listContent(gateway_auth) {
-    console.debug(`Listing content => ${storage}`)
+async function listRoot() {
 
     // e.g: GET /gateway/onedrive/v2/gateway_metadata_children/odroot
     let uri = `/gateway/${storage}/v2/gateway_metadata_children/${gateway_auth["gateway.auth.metadata.id"]}`
-    let response = await fetch(gatewayURL + uri,{
+
+
+    // For this DEMO, we are using a proxy "https://cors-anywhere.herokuapp.com/" to avoid CORS issues.
+    // https://cors-anywhere.herokuapp.com/corsdemo - Request access to demo.
+    let response = await fetch(gatewayUrl + uri,{
+    // let response = await fetch("https://cors-anywhere.herokuapp.com/" + gatewayUrl + uri,{
+        method: 'GET',
+        // credentials: 'include',
         headers: {
-            'AUTHORIZATION': `Bearer ${gateway_auth["gateway.auth.access.token"]}`
+            'AUTHORIZATION': `Bearer ${gateway_auth["gateway.auth.access.token"]}`,
+            // 'FAKE_REQUEST_HEADER': 'xxx'
         },
     })
     if (!response.ok) {
-        console.error("Error listing storage metadata.")
+        document.querySelector("#lblMsg").textContent = ""
+        document.querySelector("#lblError").textContent = "Error listing storage metadata."
         return
     }
+    let data = await response.json()
+    console.log(data)
+    document.querySelector("#divData").append(JSON.stringify(data))
 
-    return await response.json()
 }
