@@ -18,8 +18,7 @@ Use Case | Endpoint
 ---------|------------
 Determine the sign-in method | `GET /v2/gateway_auth_method`
 Sign in with supported method | `POST /v2/gateway_auth`
-Sign out | `DELETE /v2/gateway_auth/<gateway.auth.access.token>`
-Refresh expired access token | `POST /v2/gateway_auth`
+Refresh expired access token | `POST /v2/gateway_auth_access`
 
 **gateway.file**
 
@@ -175,28 +174,6 @@ Status | Description
 `200` | OK
 `400` | Missing credential
 `403` | Invalid credential
-
-## Sign out
-```
-DELETE /v2/gateway_auth/<gateway.auth.access.token>
-```
-
-**REQUEST**
-
-*URL*
-
-Property | Description
----------|-------------
-`gateway.auth.access.token` | Session to sign out.
-
-**RESPONSE**
-
-*Status*
-
-Status | Description
--------|------------
-`200` | OK
-`404` | gateway.auth.access.token not found
 
 ## Refresh expired access token
 ```
