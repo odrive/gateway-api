@@ -4,7 +4,7 @@ let storage = null
 let gatewayUrl = null
 
 
-async function authorizeGateway() {
+async function signin() {
     // Reset message texts.
     document.querySelector("#lblError").textContent = ""
     document.querySelector("#lblMsg").textContent = ""
@@ -19,7 +19,7 @@ async function authorizeGateway() {
         return
     }
 
-    // Authorize gateway.
+    // Sign in to gateway.
     document.querySelector("#lblMsg").textContent = "Connecting..."
 
     // e.g: GET /gateway/onedrive/v2/gateway_auth_method
@@ -38,7 +38,7 @@ async function authorizeGateway() {
 
     // Redirect to authorization url.
     window.open(auth_method["gateway.auth.oauth.url"], '_blank')
-    document.querySelector("#lblMsg").textContent = `After authorizing access, press "Refresh".`
+    document.querySelector("#lblMsg").textContent = `After signing in, press "Authorize".`
     document.getElementById("btnRefresh").hidden = false
 }
 
