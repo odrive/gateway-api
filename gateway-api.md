@@ -638,6 +638,7 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
+`409` | Name conflict
 
 The `Retry-After` response header may be included when code 403 is returned.
 This attribute provides the number of seconds the client should wait before trying to upload the file again.
@@ -699,6 +700,7 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
+`409` | Name conflict
 
 ## Update file
 ```
