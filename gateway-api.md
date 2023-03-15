@@ -859,6 +859,7 @@ Property | Description
 `gateway.upload.id` | Session ID
 `gateway.upload.segment` | List of updated upload segments.
 `gateway.upload.cookie` | Opaque session state required for uploading
+`gateway.upload.expiration` | Upload session expiration time, in milliseconds since epoch.
 
 *gateway.upload.segment*
 
