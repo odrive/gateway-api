@@ -272,6 +272,11 @@ Status | Description
 `403` | Not allowed
 `404` | Not found
 
+The `Retry-After` response header may be included when code 403 is returned.
+This attribute provides the number of seconds the client should wait before trying to download the file again.
+The value should be at least 600 seconds.
+A value of 0 means that the client should not try to download the file again.
+
 ## Download thumbnail
 ```
 GET /v2/gateway_file_thumbnail/<gateway.metadata.id>
@@ -602,7 +607,7 @@ Property | Description
 
 Property | Description
 ---------|-------------
-`gateway.metadata.name` | New file name
+`gateway.metadata.name` | New file name, encoded using percent-encoding format.
 `gateway.metadata.modified` | New file modified time (Millis since the epoch)
 `gateway.metadata.file.size` | New file size
 `gateway.metadata.file.sha256` | Optional file SHA-256
@@ -633,6 +638,12 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
+`409` | Name conflict
+
+The `Retry-After` response header may be included when code 403 is returned.
+This attribute provides the number of seconds the client should wait before trying to upload the file again.
+The value should be at least 600 seconds.
+A value of 0 means that the client should not try to upload the file again.
 
 ## Upload large file
 ```
@@ -662,7 +673,8 @@ Property | Description
 `gateway.metadata.file.size` | New file size
 `gateway.metadata.file.sha256` | Optional file SHA-256
 `gateway.upload.id` | File upload session ID
-`gateway.upload.segment` | List of updated segments from uploading a segment
+`gateway.upload.segment` | List of updated segment state from uploading segments
+`gateway.upload.cookie` | Updated session state from uploading segments
 
 **RESPONSE**
 
@@ -688,6 +700,7 @@ Status | Description
 `401` | Authorization required
 `403` | Not allowed
 `404` | Not found
+`409` | Name conflict
 
 ## Update file
 ```
@@ -744,6 +757,11 @@ Status | Description
 `403` | Not allowed
 `404` | Not found
 
+The `Retry-After` response header may be included when code 403 is returned.
+This attribute provides the number of seconds the client should wait before trying to upload the file again.
+The value should be at least 600 seconds.
+A value of 0 means that the client should not try to upload the file again.
+
 ## Update large file
 ```
 PUT /v2/gateway_metadata_upload/<gateway.metadata.id>
@@ -771,7 +789,8 @@ Property | Description
 `gateway.metadata.file.size` | Updated file size
 `gateway.metadata.file.sha256` | Optional file SHA-256
 `gateway.upload.id` | File upload session ID
-`gateway.upload.segment` | List of updated segments from uploading a segment
+`gateway.upload.segment` | List of updated segment state from uploading segments
+`gateway.upload.cookie` | Updated session state from uploading segments
 
 **RESPONSE**
 
@@ -839,6 +858,7 @@ Property | Description
 ---------|------------
 `gateway.upload.id` | Session ID
 `gateway.upload.segment` | List of updated upload segments.
+`gateway.upload.cookie` | Opaque session state required for uploading
 `gateway.upload.expiration` | Upload session expiration time, in milliseconds since epoch.
 
 *gateway.upload.segment*
@@ -848,7 +868,7 @@ Property | Description
 `gateway.upload.segment.number` | Sequential segment number starting from 1
 `gateway.upload.segment.sha256` | Expected segment SHA-256
 `gateway.upload.segment.size` | Expected segment size
-`gateway.upload.segment.cookie` | Opaque gateway state required for uploading
+`gateway.upload.segment.cookie` | Opaque segment state required for uploading
 
 *Status*
 
@@ -861,6 +881,11 @@ Status | Description
 `400` | Missing gateway.metadata.modified
 `401` | Authorization required
 `403` | Not allowed
+
+The `Retry-After` response header may be included when code 403 is returned.
+This attribute provides the number of seconds the client should wait before trying to start the upload again.
+The value should be at least 600 seconds.
+A value of 0 means that the client should not try to upload the file again.
 
 ## Upload file segments
 ```
@@ -883,7 +908,8 @@ Property | Description
 `gateway.upload.segment.number` | Sequential segment number starting from 1
 `gateway.upload.segment.sha256` | Expected segment SHA-256
 `gateway.upload.segment.size` | Expected segment size
-`gateway.upload.segment.cookie` | Opaque gateway state required for uploading
+`gateway.upload.segment.cookie` | Opaque segment state required for uploading
+`gateway.upload.cookie` | Opaque session state required for uploading
 
 *Body*
 
@@ -899,7 +925,8 @@ Property | Description
 `gateway.upload.segment.number` | Sequential segment number starting from 1
 `gateway.upload.segment.sha256` | Segment SHA-256
 `gateway.upload.segment.size` | Segment size
-`gateway.upload.segment.cookie` | Updated gateway state for finalizing uploads
+`gateway.upload.segment.cookie` | Updated segment state for finalizing uploads
+`gateway.upload.cookie` | Updated upload session state required for uploading
 
 *Status*
 

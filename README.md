@@ -38,9 +38,7 @@ Make the integration available to Odrive. Several options are available:
 
 # Reference Implementations
 
-- [File Server Gateway](https://github.com/odrive/py-fs-gateway)
-- [S3 Gateway](https://github.com/odrive/py-s3-gateway)
-
+Please contact odrive.
 
 
 
