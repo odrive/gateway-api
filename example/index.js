@@ -3,8 +3,12 @@ let gateway_auth = null
 let storage = null
 let gatewayUrl = null
 
+let authHeaders = {
+// Add auth header to test bim track client; otherwise leave empty
+//     'AUTHORIZATION': 'Bearer <account.id>/<app.id>',
+}
 
-async function signin() {
+    async function signin() {
     // Reset message texts.
     document.querySelector("#lblError").textContent = ""
     document.querySelector("#lblMsg").textContent = ""
@@ -25,7 +29,10 @@ async function signin() {
     // e.g: GET /gateway/onedrive/v2/gateway_auth_method
     let uri = `/gateway/${storage}/v2/gateway_auth_method`
 
-    let response = await fetch(gatewayUrl + uri)
+    let response = await fetch(gatewayUrl + uri, {
+        method: 'GET',
+        headers: authHeaders,
+    })
     if (!response.ok) {
         document.querySelector("#lblMsg").textContent = ""
         document.querySelector("#lblError").textContent = "Error connecting with gateway."
@@ -50,7 +57,8 @@ async function validateAuth() {
 
     let response = await fetch(gatewayUrl + uri, {
         method: 'POST',
-        body: JSON.stringify({"gateway.auth.oauth.state": auth_method["gateway.auth.oauth.state"]})
+        body: JSON.stringify({"gateway.auth.oauth.state": auth_method["gateway.auth.oauth.state"]}),
+        headers: authHeaders,
     })
 
     if (!response.ok) {
@@ -74,10 +82,7 @@ async function listRoot() {
     let uri = `/gateway/${storage}/v2/gateway_metadata_children/${gateway_auth["gateway.auth.metadata.id"]}`
 
 
-    // For this DEMO, we are using a proxy "https://cors-anywhere.herokuapp.com/" to avoid CORS issues.
-    // https://cors-anywhere.herokuapp.com/corsdemo - Request access to demo.
     let response = await fetch(gatewayUrl + uri,{
-    // let response = await fetch("https://cors-anywhere.herokuapp.com/" + gatewayUrl + uri,{
         method: 'GET',
         // credentials: 'include',
         headers: {
